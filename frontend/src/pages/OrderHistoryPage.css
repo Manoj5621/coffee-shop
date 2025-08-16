@@ -1,0 +1,281 @@
+/* OrderHistoryPage.css */
+.order-history-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f9f5f0;
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Reuse the same steam animation from ViewCartPage.css */
+.coffee-steam-animation {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.steam-particle {
+  position: absolute;
+  width: 30px;
+  height: 80px;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 50% 50% 0 0;
+  opacity: 0;
+  animation: steam 4s infinite ease-out;
+  filter: blur(5px);
+}
+
+@keyframes steam {
+  0% {
+    transform: translateY(0) scale(0.8);
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.8;
+  }
+  50% {
+    transform: translateY(-100px) scale(1.1);
+  }
+  100% {
+    transform: translateY(-200px) scale(1.5);
+    opacity: 0;
+  }
+}
+
+.order-history-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  position: relative;
+  z-index: 1;
+}
+
+.order-history-header h2 {
+  color: #5d4037;
+  font-size: 28px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.coffee-cup-icon {
+  font-size: 32px;
+  color: #6d4c41;
+}
+
+.loading-orders {
+  text-align: center;
+  margin-top: 50px;
+  color: #6d4c41;
+  position: relative;
+  z-index: 1;
+}
+
+.coffee-brewing-animation {
+  width: 100px;
+  height: 100px;
+  position: relative;
+  margin: 0 auto 20px;
+}
+
+/* Coffee Cup Animation */
+.coffee-cup {
+  margin: 0 auto 10px; /* reduced bottom margin */
+  position: relative;
+  width: 80px;
+  height: 80px;
+  transform: translateY(-20px); /* moves cup higher */
+  z-index: 2; /* stays above background but below text/buttons */
+}
+
+
+.coffee-liquid {
+  width: 70px;
+  height: 20px;
+  background: #6d4c41;
+  border-radius: 0 0 15px 15px;
+  position: absolute;
+  bottom: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  animation: brewing 2s infinite ease-in-out;
+}
+
+@keyframes brewing {
+  0%, 100% { height: 20px; }
+  50% { height: 40px; }
+}
+
+.no-orders-message {
+  text-align: center;
+  margin-top: 80px;
+  color: #6d4c41;
+  position: relative;
+  z-index: 1;
+}
+
+.empty-order-icon {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  margin: 0 auto 30px;
+}
+
+.coffee-stain {
+  width: 80px;
+  height: 80px;
+  background: #d7ccc8;
+  border-radius: 50%;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0.7;
+}
+
+.receipt-icon {
+  font-size: 60px;
+  position: absolute;
+  top: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.orders-list {
+  display: grid;
+  gap: 20px;
+  position: relative;
+  z-index: 1;
+}
+
+.order-card {
+  background: white;
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.order-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 1px dashed #d7ccc8;
+}
+
+.order-id {
+  color: #5d4037;
+  margin: 0;
+  font-size: 18px;
+}
+
+.order-status {
+  padding: 5px 15px;
+  border-radius: 20px;
+  color: white;
+  font-weight: 500;
+  font-size: 14px;
+  text-transform: capitalize;
+}
+
+.order-details {
+  margin-bottom: 15px;
+}
+
+.order-meta {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+  color: #8d6e63;
+}
+
+.meta-icon {
+  margin-right: 8px;
+}
+
+.order-items {
+  margin-top: 15px;
+}
+
+.order-items h4 {
+  color: #5d4037;
+  margin-bottom: 10px;
+  font-size: 16px;
+}
+
+.order-item {
+  display: flex;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #f5f5f5;
+}
+
+.order-item:last-child {
+  border-bottom: none;
+}
+
+.item-image {
+  width: 50px;
+  height: 50px;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-right: 15px;
+}
+
+.item-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.item-info {
+  flex-grow: 1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.item-name {
+  font-weight: 500;
+  color: #5d4037;
+}
+
+.item-quantity, .item-size {
+  color: #8d6e63;
+  font-size: 14px;
+}
+
+.item-price {
+  font-weight: 600;
+  color: #5d4037;
+}
+
+.order-footer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.reorder-btn {
+  background: #6d4c41;
+  color: white;
+  border: none;
+  padding: 8px 20px;
+  border-radius: 20px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.reorder-btn:hover {
+  background: #5d4037;
+  transform: translateY(-2px);
+}

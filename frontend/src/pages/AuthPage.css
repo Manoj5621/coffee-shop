@@ -1,0 +1,363 @@
+/* Main Container */
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f9f5f0;
+  position: relative;
+  overflow: hidden;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+
+/* Animated Coffee Beans Background */
+.animated-beans-bg {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Force beans to be higher on the page */
+.animated-beans-bg.top {
+  top: 0;
+  bottom: auto;
+}
+
+/* Beans style remains unchanged */
+.animated-bean {
+  position: absolute;
+  width: 20px;
+  height: 12px;
+  background: #6F4E37;
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+  opacity: 0.1;
+}
+
+
+/* Position the animated beans randomly */
+.animated-bean:nth-child(1) { top: 10%; left: 15%; }
+.animated-bean:nth-child(2) { top: 25%; left: 80%; }
+.animated-bean:nth-child(3) { top: 60%; left: 10%; }
+.animated-bean:nth-child(4) { top: 75%; left: 85%; }
+.animated-bean:nth-child(5) { top: 30%; left: 30%; }
+.animated-bean:nth-child(6) { top: 50%; left: 70%; }
+.animated-bean:nth-child(7) { top: 80%; left: 40%; }
+.animated-bean:nth-child(8) { top: 15%; left: 60%; }
+.animated-bean:nth-child(9) { top: 40%; left: 20%; }
+.animated-bean:nth-child(10) { top: 65%; left: 75%; }
+.animated-bean:nth-child(11) { top: 20%; left: 40%; }
+.animated-bean:nth-child(12) { top: 70%; left: 30%; }
+.animated-bean:nth-child(13) { top: 35%; left: 65%; }
+.animated-bean:nth-child(14) { top: 55%; left: 85%; }
+.animated-bean:nth-child(15) { top: 25%; left: 25%; }
+
+/* Auth Card */
+.auth-card {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(111, 78, 55, 0.15);
+  padding: 40px;
+  width: 100%;
+  max-width: 450px;
+  z-index: 1;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid #e8d9c5;
+}
+
+.auth-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 8px;
+  background: linear-gradient(90deg, #6F4E37, #C4A484);
+}
+
+/* Header Styles */
+.coffee-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.auth-title {
+  color: #5a3b27;
+  font-size: 28px;
+  margin-bottom: 10px;
+  font-weight: 700;
+}
+
+.auth-subtitle {
+  color: #8b6b4b;
+  font-size: 15px;
+  margin-bottom: 20px;
+}
+
+/* Coffee Cup Animation */
+.coffee-cup {
+  margin: 0 auto 25px;
+  position: relative;
+  width: 80px;
+  height: 80px;
+}
+
+.cup {
+  width: 60px;
+  height: 70px;
+  background: linear-gradient(to right, #6F4E37, #8b6b4b);
+  border-radius: 0 0 15px 15px;
+  margin: 0 auto;
+  position: relative;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.cup:before {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 20px;
+  border: 5px solid #f9f5f0;
+  border-radius: 50%;
+  top: -15px;
+  box-sizing: border-box;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.steam {
+  position: absolute;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  top: -40px;
+}
+
+.steam-particle {
+  width: 6px;
+  height: 30px;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 10px;
+  margin: 0 5px;
+}
+
+/* Form Styles */
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.input-group label {
+  color: #5a3b27;
+  font-weight: 500;
+  font-size: 14px;
+  margin-left: 5px;
+}
+
+.coffee-input {
+  padding: 14px 16px;
+  border: 2px solid #e8d9c5;
+  border-radius: 10px;
+  font-size: 15px;
+  transition: all 0.3s ease;
+  background-color: #fff;
+  color: #333;
+}
+
+.coffee-input:focus {
+  border-color: #8b6b4b;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(139, 107, 75, 0.2);
+}
+
+.coffee-input::placeholder {
+  color: #c4a484;
+  opacity: 0.7;
+}
+
+/* Button Styles */
+.coffee-btn {
+  background: linear-gradient(90deg, #6F4E37, #8b6b4b);
+  color: white;
+  border: none;
+  padding: 16px;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 8px rgba(111, 78, 55, 0.2);
+}
+
+.coffee-btn:hover {
+  background: linear-gradient(90deg, #5a3b27, #7a5b3b);
+  box-shadow: 0 6px 12px rgba(111, 78, 55, 0.3);
+}
+
+.coffee-btn:disabled {
+  background: #ddd;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.loading-spinner {
+  width: 22px;
+  height: 22px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: white;
+  animation: spin 1s ease-in-out infinite;
+  margin: 0 auto;
+}
+
+/* Switch Styles */
+.auth-switch {
+  text-align: center;
+  margin-top: 25px;
+  color: #8b6b4b;
+  font-size: 14px;
+}
+
+.switch-btn {
+  background: none;
+  border: none;
+  color: #6F4E37;
+  font-weight: 600;
+  cursor: pointer;
+  margin-left: 5px;
+  text-decoration: underline;
+  padding: 5px;
+  font-size: 14px;
+}
+
+/* Error Message */
+.error-message {
+  color: #d32f2f;
+  background-color: #fdecea;
+  padding: 12px 15px;
+  border-radius: 8px;
+  margin-top: 15px;
+  text-align: center;
+  font-size: 14px;
+  border: 1px solid #f5c2c7;
+}
+
+/* Popup styles */
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(90, 59, 39, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.success-popup, .login-popup {
+  background-color: #f9f5f0;
+  padding: 2rem;
+  border-radius: 16px;
+  text-align: center;
+  max-width: 400px;
+  width: 90%;
+  box-shadow: 0 10px 30px rgba(90, 59, 39, 0.2);
+  border: 1px solid #e8d9c5;
+}
+
+.success-popup h3, .login-popup h3 {
+  color: #5a3b27;
+  margin-bottom: 1rem;
+  font-size: 22px;
+}
+
+.success-popup p, .login-popup p {
+  color: #8b6b4b;
+  margin-bottom: 1.5rem;
+  font-size: 15px;
+}
+
+.coffee-spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid rgba(139, 107, 75, 0.2);
+  border-radius: 50%;
+  border-top-color: #6f4e37;
+  animation: spin 1s linear infinite;
+  margin: 0 auto;
+}
+
+/* Animated Coffee Icons */
+.animated-coffee-icon {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 20px;
+  position: relative;
+}
+
+.animated-coffee-icon.success::before,
+.animated-coffee-icon.success::after,
+.animated-coffee-icon.welcome::before,
+.animated-coffee-icon.welcome::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+}
+
+/* Success icon (smiling coffee cup) */
+.animated-coffee-icon.success::before {
+  width: 60px;
+  height: 70px;
+  background: linear-gradient(to right, #6F4E37, #8b6b4b);
+  border-radius: 0 0 15px 15px;
+  left: 10px;
+  top: 10px;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.animated-coffee-icon.success::after {
+  width: 70px;
+  height: 20px;
+  border: 5px solid #f9f5f0;
+  border-radius: 50%;
+  top: 0;
+  left: 5px;
+  box-sizing: border-box;
+}
+
+/* Welcome icon (waving coffee cup) */
+.animated-coffee-icon.welcome::before {
+  width: 60px;
+  height: 70px;
+  background: linear-gradient(to right, #6F4E37, #8b6b4b);
+  border-radius: 0 0 15px 15px;
+  left: 10px;
+  top: 10px;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.animated-coffee-icon.welcome::after {
+  width: 70px;
+  height: 20px;
+  border: 5px solid #f9f5f0;
+  border-radius: 50%;
+  top: 0;
+  left: 5px;
+  box-sizing: border-box;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
