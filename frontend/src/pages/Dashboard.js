@@ -7,6 +7,7 @@ import 'swiper/css/pagination';
 import 'swiper/css/effect-fade';
 import ProductListing from './ProductListing';
 import './ProductListing.css';
+import ChatbotPage from './ChatbotPage'; // Assuming you have a ChatbotPage component
 
 // Image imports (you'll need to download and place these in your project)
 import coffeeBg from './assets/coffee-bg.jpg';
@@ -35,6 +36,15 @@ const CoffeeHouse = ({ name }) => {
   // Chatbot state
   const [showChatbotPopup, setShowChatbotPopup] = useState(false);
   const [isChatbotAnimating, setIsChatbotAnimating] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [showChatbot, setShowChatbot] = useState(false);
+
+useEffect(() => {
+  // Check if token and user_id exist in localStorage
+  const token = localStorage.getItem('token');
+  const userId = localStorage.getItem('user_id');
+  setIsLoggedIn(!!token && !!userId);
+}, []);
   
   // Shop status logic
   const [shopStatus, setShopStatus] = React.useState({
@@ -132,9 +142,10 @@ const CoffeeHouse = ({ name }) => {
     return () => clearTimeout(timer);
   }, []);
 
-  const handleChatbotClick = () => {
-    navigate('/chatbot');
-  };
+   const handleChatbotClick = () => {
+  setShowChatbot(!showChatbot);
+  setShowChatbotPopup(false);
+};
 
   const handleChatbotHover = () => {
     setShowChatbotPopup(true);
@@ -160,19 +171,28 @@ const CoffeeHouse = ({ name }) => {
       </div>
       
       {/* Chatbot Button */}
-      <div 
-        className={`chatbot-button ${isChatbotAnimating ? 'pulse' : ''}`}
-        onClick={handleChatbotClick}
-        onMouseEnter={handleChatbotHover}
-        onMouseLeave={handleChatbotLeave}
-      >
-        <img src={chatbotIcon} alt="Chatbot" className="chatbot-icon" />
-        {showChatbotPopup && (
-          <div className="chatbot-popup">
-            <div className="chatbot-speech-bubble">Can I help you?</div>
-          </div>
-        )}
+
+<div className="chatbot-container">
+  <div 
+    className={`chatbot-button ${isChatbotAnimating ? 'pulse' : ''}`}
+    onClick={handleChatbotClick}
+    onMouseEnter={handleChatbotHover}
+    onMouseLeave={handleChatbotLeave}
+  >
+    <img src={chatbotIcon} alt="Chatbot" className="chatbot-icon" />
+    {showChatbotPopup && (
+      <div className="chatbot-popup">
+        <div className="chatbot-speech-bubble">Can I help you?</div>
       </div>
+    )}
+  </div>
+
+  {showChatbot && (
+    <div className="chatbot-window">
+      <ChatbotPage /> {/* This will be your existing chatbot component */}
+    </div>
+  )}
+</div>
       
       {/* Navigation */}
       <nav className="dashboard-nav">
@@ -218,14 +238,31 @@ const CoffeeHouse = ({ name }) => {
           >
             Contact
           </button>
-          <div className="nav-actions">
-            <Link to="/cart" className="cart-link">
-              <i className="fas fa-shopping-cart"></i> Cart
-            </Link>
-            <Link to="/auth/signup" className="auth-link">SignUp</Link>
-            <Link to="/auth/login" className="auth-link">Login</Link>
-            <Link to="/admin" className="admin-link">Admin</Link>
-          </div>
+<div className="nav-actions">
+  <Link to="/cart" className="cart-link">
+    <i className="fas fa-shopping-cart"></i> Cart
+  </Link>
+  {isLoggedIn ? (
+    <button 
+      className="auth-link"
+      onClick={() => {
+        localStorage.removeItem('token');
+        localStorage.removeItem('user_id');
+        setIsLoggedIn(false);
+        // Optional: redirect to home after logout
+        navigate('/');
+      }}
+    >
+      Logout
+    </button>
+  ) : (
+    <>
+      <Link to="/auth/signup" className="auth-link">SignUp</Link>
+      <Link to="/auth/login" className="auth-link">Login</Link>
+    </>
+  )}
+  <Link to="/admin" className="admin-link">Admin</Link>
+</div>
         </div>
       </nav>
 

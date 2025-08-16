@@ -25,11 +25,11 @@ const drinkCoffee = keyframes`
 
 // Styled components
 const ChatContainer = styled.div`
-  max-width: 500px;
+  max-width: 300px;
   margin: 2rem auto;
   background: #f9f3e9;
   border-radius: 20px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 10px 25px rgba(35, 29, 29, 0.1);
   overflow: hidden;
   font-family: 'Open Sans', sans-serif;
   position: relative;
@@ -51,7 +51,7 @@ const ChatHeader = styled.div`
 `;
 
 const MessagesContainer = styled.div`
-  height: 400px;
+  height: 300px;
   padding: 1.5rem;
   overflow-y: auto;
   background-color: rgba(239, 235, 233, 0.85);

@@ -884,3 +884,19 @@
 .member-social a:hover {
   color: #C4A484;
 }
+
+.chatbot-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+}
+
+.chatbot-window {
+  position: absolute;
+  bottom: 60px;
+  right: 50px;
+  width: 350px;
+  height:500px;
+  transition: all 0.3s ease;
+}
