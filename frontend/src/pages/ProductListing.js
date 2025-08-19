@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { getAllProducts, getProductTypes } from '../api/product';
-import { addToCart, viewCart } from '../api/cart';
 import './ProductListing.css';
+import { addToCart, viewCart, checkout } from '../api/cart';
 
 function ProductListing() {
   const [products, setProducts] = useState([]);
@@ -90,43 +90,49 @@ function ProductListing() {
     }));
   };
 
-  const handleBuyNow = async (productId) => {
-    try {
-      const size = selectedSizes[productId];
-      const product = products.find(p => p.product_id === productId);
-      
-      await addToCart(productId, { 
-        size,
-        name: product.name,
-        image: product.image,
-        price: product.discount_price || product.price,
-        quantity: 1
-      });
-      
-      setOrderStatus({ 
-        productId, 
-        message: 'Order placed successfully! Your coffee is being prepared.', 
-        isBuyNow: true 
-      });
+const handleBuyNow = async (productId) => {
+  try {
+    const size = selectedSizes[productId];
+    const product = products.find(p => p.product_id === productId);
+    const user_id = localStorage.getItem("user_id");
+    
+    // Add to cart first
+    await addToCart(productId, { 
+      size,
+      name: product.name,
+      image: product.image,
+      price: product.discount_price || product.price,
+      quantity: 1
+    });
+    
+    // Then call checkout API
+    const checkoutResult = await checkout(user_id);
+    
+    setOrderStatus({ 
+      productId, 
+      message: 'Order placed successfully! Your coffee is being prepared.', 
+      isBuyNow: true 
+    });
 
-      const buyButton = document.getElementById(`buy-btn-${productId}`);
-      if (buyButton) {
-        buyButton.classList.add('animate-buy');
-        setTimeout(() => buyButton.classList.remove('animate-buy'), 500);
-      }
-
-      setTimeout(() => setOrderStatus(null), 3000);
-      loadCartCount();
-    } catch (error) {
-      console.error('Failed to place order:', error);
-      setOrderStatus({ 
-        productId, 
-        message: 'Failed to place order. Please try again.', 
-        error: true 
-      });
-      setTimeout(() => setOrderStatus(null), 3000);
+    const buyButton = document.getElementById(`buy-btn-${productId}`);
+    if (buyButton) {
+      buyButton.classList.add('animate-buy');
+      setTimeout(() => buyButton.classList.remove('animate-buy'), 500);
     }
-  };
+
+    setTimeout(() => setOrderStatus(null), 3000);
+    loadCartCount();
+    localStorage.setItem("cart", JSON.stringify(null));
+  } catch (error) {
+    console.error('Failed to place order:', error);
+    setOrderStatus({ 
+      productId, 
+      message: 'Failed to place order. Please try again.', 
+      error: true 
+    });
+    setTimeout(() => setOrderStatus(null), 3000);
+  }
+};
 
   const handleAddToCart = async (productId) => {
     try {

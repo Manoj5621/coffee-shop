@@ -68,3 +68,4 @@ async def add_to_cart(
         upsert=True
     )
     return {"message": "Product added to cart"}
+
