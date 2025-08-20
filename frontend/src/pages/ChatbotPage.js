@@ -266,6 +266,14 @@ function ChatbotPage() {
     scrollToBottom();
   }, [messages]);
 
+  const handleRecommendedCoffee = (coffeeName) => {
+    // Send the recommended coffee name to the main product listing page
+    window.postMessage({
+      type: 'CHATBOT_RECOMMENDATION',
+      coffee: coffeeName
+    }, '*');
+  };
+
   const handleChat = async (e) => {
     e.preventDefault();
     if (!input.trim()) return;
@@ -280,7 +288,14 @@ function ChatbotPage() {
         message: input,
       });
 
-      setMessages(prev => [...prev, { text: res.data.suggestion, sender: "bot" }]);
+      const botMessage = { text: res.data.suggestion, sender: "bot" };
+      setMessages(prev => [...prev, botMessage]);
+
+      // Check if there's a search_query in the response and send it to products page
+      if (res.data.search_query) {
+        handleRecommendedCoffee(res.data.search_query);
+      }
+
     } catch (error) {
       console.error("Error talking to chatbot:", error);
       setMessages(prev => [...prev, { 

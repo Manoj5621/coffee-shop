@@ -25,6 +25,26 @@ function ProductListing() {
     filterProducts();
   }, [products, selectedType, searchTerm]);
 
+  useEffect(() => {
+  const handleChatbotRecommendation = (event) => {
+    if (event.data.type === 'CHATBOT_RECOMMENDATION' && event.data.coffee) {
+      setSearchTerm(event.data.coffee);
+      
+      // Optional: Scroll to the recommended product section
+      setTimeout(() => {
+        const element = document.querySelector('.coffee-search');
+        if (element) element.focus();
+      }, 100);
+    }
+  };
+
+  window.addEventListener('message', handleChatbotRecommendation);
+  
+  return () => {
+    window.removeEventListener('message', handleChatbotRecommendation);
+  };
+}, []);
+
   const loadProducts = async () => {
     try {
       setIsLoading(true);

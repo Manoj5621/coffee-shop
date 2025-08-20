@@ -8,3 +8,5 @@ export async function askMood(mood) {
   });
   return await res.json();
 }
+
+// http://localhost:8000/chatbot

@@ -155,6 +155,14 @@ useEffect(() => {
     setShowChatbotPopup(false);
   };
 
+  const handleRecommendedCoffee = (coffeeName) => {
+  // Send the recommended coffee name to the main product listing page
+  window.postMessage({
+    type: 'CHATBOT_RECOMMENDATION',
+    coffee: coffeeName
+  }, '*');
+};
+
   // Home section images for the gallery
   const homeImages = [
     { src: coffeeBeans, alt: 'Fresh coffee beans', caption: 'Premium Quality Beans' },
