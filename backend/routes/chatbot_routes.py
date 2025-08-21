@@ -56,6 +56,88 @@ logger.debug(f"Products with stock status: {PRODUCTS_WITH_STOCK}")
 
 # Complete coffee database with all details (fallback if MongoDB is unavailable)
 COFFEE_ITEMS_WITH_INFO = {
+       # ☕ Classic Coffees
+    "Espresso": {"description": "Strong, concentrated coffee shot made by forcing hot water through finely-ground beans.", "category": "Classic"},
+    "Americano": {"description": "Espresso diluted with hot water for a smoother, less intense flavor.", "category": "Classic"},
+    "Cappuccino": {"description": "Equal parts espresso, steamed milk, and milk foam.", "category": "Classic"},
+    "Latte": {"description": "Espresso with steamed milk and a thin layer of foam.", "category": "Classic"},
+    "Flat White": {"description": "Similar to a latte, but with a thinner layer of microfoam and stronger coffee flavor.", "category": "Classic"},
+    "Mocha": {"description": "A chocolate-flavored espresso drink with steamed milk.", "category": "Flavored"},
+    "Macchiato": {"description": "Espresso topped with a small amount of milk foam.", "category": "Classic"},
+    "Affogato": {"description": "Vanilla ice cream 'drowned' in a shot of hot espresso.", "category": "Dessert"},
+    "Cold Brew": {"description": "Coffee brewed slowly with cold water for a smooth, low-acid taste.", "category": "Cold"},
+    "Iced Coffee": {"description": "Chilled brewed coffee served over ice.", "category": "Cold"},
+    "Turkish Coffee": {"description": "Strong, unfiltered coffee made in a cezve with very fine grounds.", "category": "Traditional"},
+    "French Press": {"description": "Coarsely ground coffee steeped in hot water and then pressed.", "category": "Brewing Method"},
+    "Pour Over": {"description": "Manual brewing method with hot water poured over grounds in a filter.", "category": "Brewing Method"},
+    "Aeropress": {"description": "Pressurized coffee maker that brews rich, smooth coffee quickly.", "category": "Brewing Method"},
+    "Vienna Coffee": {"description": "Two shots of espresso topped with whipped cream.", "category": "Classic"},
+    "Lungo": {"description": "Longer espresso shot with more water.", "category": "Classic"},
+    "Red Eye": {"description": "Brewed coffee with one shot of espresso.", "category": "Strong"},
+    "Espresso Con Panna": {"description": "Espresso topped with whipped cream.", "category": "Dessert"},
+
+    # 🌍 International Varieties
+    "Greek Coffee": {"description": "Boiled coffee with fine grounds, often sweet, unfiltered.", "category": "Traditional"},
+    "Cuban Coffee": {"description": "Strong espresso sweetened with whipped sugar (espuma).", "category": "Traditional"},
+    "Mexican Café de Olla": {"description": "Coffee brewed with cinnamon and unrefined sugar.", "category": "Traditional"},
+    "Swedish Fika Coffee": {"description": "Standard brewed coffee enjoyed during social breaks (fika).", "category": "Traditional"},
+    "Brazilian Café com Leite": {"description": "Brewed coffee mixed with hot milk in equal parts.", "category": "Traditional"},
+    "Arabic Coffee (Qahwa)": {"description": "Light roast coffee flavored with cardamom, served in small cups.", "category": "Traditional"},
+    "Indian Filter Coffee": {"description": "Strong coffee with boiled milk, brewed in a traditional filter.", "category": "Traditional"},
+    "Ethiopian Coffee (Bunna)": {"description": "Earthy, rich coffee served during a traditional coffee ceremony.", "category": "Traditional"},
+
+    # 🧊 Iced & Cold Coffees
+    "Iced Latte": {"description": "Espresso with cold milk and ice.", "category": "Cold"},
+    "Iced Mocha": {"description": "Espresso with chocolate and milk over ice.", "category": "Cold"},
+    "Iced Macchiato": {"description": "Cold milk with espresso poured over the top.", "category": "Cold"},
+    "Iced Espresso": {"description": "Espresso served chilled over ice.", "category": "Cold"},
+    "Frappe": {"description": "Blended iced coffee drink, often sweet and frothy.", "category": "Cold"},
+    "Nitro Cold Brew": {"description": "Cold brew infused with nitrogen for a creamy texture.", "category": "Cold"},
+    "Coffee Milkshake": {"description": "Ice cream blended with coffee for a dessert-like drink.", "category": "Dessert"},
+    "Frozen Coffee": {"description": "Slushy-style blended iced coffee.", "category": "Cold"},
+
+    # 🧁 Dessert-Style Coffees
+    "Tiramisu Latte": {"description": "Latte inspired by the flavors of tiramisu dessert.", "category": "Dessert"},
+    "Caramel Macchiato": {"description": "Espresso with milk, vanilla, and caramel drizzle.", "category": "Dessert"},
+    "Vanilla Latte": {"description": "Latte flavored with vanilla syrup.", "category": "Dessert"},
+    "Hazelnut Mocha": {"description": "Mocha blended with hazelnut syrup.", "category": "Dessert"},
+    "Pumpkin Spice Latte": {"description": "Seasonal latte with pumpkin pie spices.", "category": "Seasonal"},
+    "Salted Caramel Latte": {"description": "Latte with sweet and salty caramel flavor.", "category": "Dessert"},
+    "Toffee Nut Latte": {"description": "Sweet latte with toffee and nut flavors.", "category": "Dessert"},
+    "Peppermint Mocha": {"description": "Mocha flavored with peppermint syrup.", "category": "Seasonal"},
+
+    # 🧪 Trendy & Modern Coffees
+    "Dalgona Coffee": {"description": "Whipped instant coffee layered over hot or cold milk.", "category": "Modern"},
+    "Espresso Tonic": {"description": "Espresso poured over tonic water with ice.", "category": "Modern"},
+    "Spanish Latte": {"description": "Sweetened condensed milk with espresso and steamed milk.", "category": "Modern"},
+    "Oat Milk Latte": {"description": "Latte made with oat milk for a dairy-free option.", "category": "Modern"},
+    "Matcha Espresso Fusion": {"description": "Layered green tea matcha with espresso over milk.", "category": "Modern"},
+    "Chicory Coffee": {"description": "Coffee blended with roasted chicory root for a bold flavor.", "category": "Traditional"},
+    "Protein Coffee": {"description": "Coffee mixed with protein powder for a workout-friendly drink.", "category": "Modern"},
+    "Bulletproof Coffee (Keto Coffee)": {"description": "Coffee blended with butter and MCT oil for energy and focus.", "category": "Modern"},
+
+    # 🍫 Chocolate & Flavored Blends
+    "White Chocolate Mocha": {"description": "Espresso with white chocolate syrup and milk.", "category": "Dessert"},
+    "Dark Mocha": {"description": "Bold espresso with dark chocolate and steamed milk.", "category": "Dessert"},
+    "Chocolate Espresso": {"description": "Double espresso with rich chocolate flavor.", "category": "Dessert"},
+    "Mocha Frappuccino": {"description": "Iced blended coffee with chocolate flavoring.", "category": "Dessert"},
+    "Mint Mocha": {"description": "Mocha with a cool minty twist.", "category": "Dessert"},
+    "Chocolate Affogato": {"description": "Ice cream topped with espresso and chocolate drizzle.", "category": "Dessert"},
+
+    # 🧬 Experimental & Unique Blends
+    "Egg Coffee (Vietnam)": {"description": "Creamy coffee topped with sweet egg yolk foam.", "category": "Traditional"},
+    "Charcoal Latte": {"description": "Latte made with activated charcoal for a detox effect.", "category": "Modern"},
+    "Turmeric Latte (Golden Milk Coffee)": {"description": "Spiced latte with turmeric and milk.", "category": "Modern"},
+    "Beetroot Latte": {"description": "Latte with vibrant, earthy beetroot and steamed milk.", "category": "Modern"},
+    "Butter Coffee": {"description": "Blended coffee with unsalted butter or ghee.", "category": "Modern"},
+    "Black Sesame Latte": {"description": "Nutty, creamy latte made with black sesame paste.", "category": "Modern"},
+
+    # 🍯 Honey & Spice-Based Coffees
+    "Cinnamon Latte": {"description": "Latte flavored with aromatic cinnamon.", "category": "Spiced"},
+    "Honey Almondmilk Flat White": {"description": "Flat white with honey and almond milk.", "category": "Modern"},
+    "Maple Latte": {"description": "Latte sweetened with natural maple syrup.", "category": "Modern"},
+    "Cardamom Coffee": {"description": "Coffee infused with fragrant cardamom spice.", "category": "Spiced"},
+    "Chai Coffee Blend": {"description": "Fusion of chai spices and espresso.", "category": "Spiced"}
     # ... (keep your existing COFFEE_ITEMS_WITH_INFO dictionary as is)
 }
 
