@@ -260,14 +260,14 @@
 }
 
 .product-details {
-  padding: 20px;
+  padding: 10px;
   flex-grow: 1;
   display: flex;
   flex-direction: column;
 }
 
 .product-name {
-  margin: 0 0 10px;
+  margin: 0 0 5px;
   color: #3e2723;
   font-size: 1.2rem;
 }
@@ -312,7 +312,7 @@
 .size-btn {
   padding: 5px 10px;
   border: 1px solid #d7ccc8;
-  background-color: #fff;
+  background-color: #fbf8f8;
   border-radius: 5px;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -484,4 +484,3 @@
     align-items: center;
   }
 }
-

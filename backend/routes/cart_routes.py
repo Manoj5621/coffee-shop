@@ -216,7 +216,7 @@ class CheckoutRequest(BaseModel):
     items: List[CheckoutItem]
 
 
-@router.post("/checkout")
+@router.post("out")
 async def checkout(data: CheckoutRequest):
     logging.debug("Received checkout request: %s", data.dict())
 
