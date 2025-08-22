@@ -3,7 +3,6 @@ const BASE_URL = "http://localhost:8000/";
 const user_id = localStorage.getItem("user_id") // Replace with actual user ID logic
 
 export function viewCart(user_id) {
-  // Get full cart from localStorage
   const cart = JSON.parse(localStorage.getItem("cart")) || [];
 
   // Filter cart for this user
