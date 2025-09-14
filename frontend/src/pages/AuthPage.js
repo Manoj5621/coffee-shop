@@ -308,7 +308,7 @@ function AuthPage({ initialMode = "login" }) {
           >
             {isLoading ? (
               <div className="loading-spinner"></div>
-            ) : isSignup ? "Brew My Account" : "Pour Me In"}
+            ) : isSignup ? "Create New Account" : "Sign In"}
           </motion.button>
 
           {error && (

@@ -1,0 +1,82 @@
+ # ☕ Classic Coffees
+    "Espresso": description": "Strong, concentrated coffee shot made by forcing hot water through finely-ground beans.
+    "Americano": description": "Espresso diluted with hot water for a smoother, less intense flavor.
+    "Cappuccino": description": "Equal parts espresso, steamed milk, and milk foam.
+    "Latte": description": "Espresso with steamed milk and a thin layer of foam.
+    "Flat White": {"description": "Similar to a latte, but with a thinner layer of microfoam and stronger coffee flavor.
+    "Mocha": {"description": "A chocolate-flavored espresso drink with steamed milk.
+    "Macchiato": {"description": "Espresso topped with a small amount of milk foam."
+    "Affogato": {"description": "Vanilla ice cream 'drowned' in a shot of hot espresso."
+    "Cold Brew": {"description": "Coffee brewed slowly with cold water for a smooth, low-acid taste.
+    "Iced Coffee": {"description": "Chilled brewed coffee served over ice."
+    "Turkish Coffee": {"description": "Strong, unfiltered coffee made in a cezve with very fine grounds."
+    "French Press": {"description": "Coarsely ground coffee steeped in hot water and then pressed."
+    "Pour Over": {"description": "Manual brewing method with hot water poured over grounds in a filter."
+    "Aeropress": {"description": "Pressurized coffee maker that brews rich, smooth coffee quickly."
+    "Vienna Coffee": {"description": "Two shots of espresso topped with whipped cream.
+    "Lungo": {"description": "Longer espresso shot with more water.
+    "Red Eye": {"description": "Brewed coffee with one shot of espresso.
+    "Espresso Con Panna": {"description": "Espresso topped with whipped cream.
+
+    # 🌍 International Varieties
+    "Greek Coffee": {"description": "Boiled coffee with fine grounds, often sweet, unfiltered.
+    "Cuban Coffee": {"description": "Strong espresso sweetened with whipped sugar (espuma).
+    "Mexican Café de Olla": {"description": "Coffee brewed with cinnamon and unrefined sugar .
+    "Swedish Fika Coffee": {"description": "Standard brewed coffee enjoyed during social breaks (fika).
+    "Brazilian Café com Leite": {"description": "Brewed coffee mixed with hot milk in equal parts.
+    "Arabic Coffee (Qahwa)": {"description": "Light roast coffee flavored with cardamom, served in small cups.
+    "Indian Filter Coffee": {"description": "Strong coffee with boiled milk, brewed in a traditional filter.
+    "Ethiopian Coffee (Bunna)": {"description": "Earthy, rich coffee served during a traditional coffee ceremony.
+
+    # 🧊 Iced & Cold Coffees
+    "Iced Latte": {"description": "Espresso with cold milk and ice."
+    "Iced Mocha": {"description": "Espresso with chocolate and milk over ice.
+    "Iced Macchiato": {"description": "Cold milk with espresso poured over the top.
+    "Iced Espresso": {"description": "Espresso served chilled over ice.
+    "Frappe": {"description": "Blended iced coffee drink, often sweet and frothy.
+    "Nitro Cold Brew": {"description": "Cold brew infused with nitrogen for a creamy texture.
+    "Coffee Milkshake": {"description": "Ice cream blended with coffee for a dessert-like drink.
+    "Frozen Coffee": {"description": "Slushy-style blended iced coffee.
+
+    # 🧁 Dessert-Style Coffees
+    "Tiramisu Latte": {"description": "Latte inspired by the flavors of tiramisu dessert.
+    "Caramel Macchiato": {"description": "Espresso with milk, vanilla, and caramel drizzle .
+    "Vanilla Latte": {"description": "Latte flavored with vanilla syrup.
+    "Hazelnut Mocha": {"description": "Mocha blended with hazelnut syrup.
+    "Pumpkin Spice Latte": {"description": "Seasonal latte with pumpkin pie spices.
+    "Salted Caramel Latte": {"description": "Latte with sweet and salty caramel flavor.
+    "Toffee Nut Latte": {"description": "Sweet latte with toffee and nut flavors.
+    "Peppermint Mocha": {"description": "Mocha flavored with peppermint syrup.
+
+    # 🧪 Trendy & Modern Coffees
+    "Dalgona Coffee": {"description": "Whipped instant coffee layered over hot or cold milk.
+    "Espresso Tonic": {"description": "Espresso poured over tonic water with ice.
+    "Spanish Latte": {"description": "Sweetened condensed milk with espresso and steamed milk .
+    "Oat Milk Latte": {"description": "Latte made with oat milk for a dairy-free option.
+    "Matcha Espresso Fusion": {"description": "Layered green tea matcha with espresso over milk.
+    "Chicory Coffee": {"description": "Coffee blended with roasted chicory root for a bold flavor.
+    "Protein Coffee": {"description": "Coffee mixed with protein powder for a workout-friendly drink.
+    "Bulletproof Coffee (Keto Coffee)": {"description": "Coffee blended with butter and MCT oil for energy and focus.
+
+    # 🍫 Chocolate & Flavored Blends
+    "White Chocolate Mocha": {"description": "Espresso with white chocolate syrup and milk.
+    "Dark Mocha": {"description": "Bold espresso with dark chocolate and steamed milk.
+    "Chocolate Espresso": {"description": "Double espresso with rich chocolate flavor.
+    "Mocha Frappuccino": {"description": "Iced blended coffee with chocolate flavoring.
+    "Mint Mocha": {"description": "Mocha with a cool minty twist.
+    "Chocolate Affogato": {"description": "Ice cream topped with espresso and chocolate drizzle.
+
+    # 🧬 Experimental & Unique Blends
+    "Egg Coffee (Vietnam)": {"description": "Creamy coffee topped with sweet egg yolk foam.
+    "Charcoal Latte": {"description": "Latte made with activated charcoal for a detox effect.
+    "Turmeric Latte (Golden Milk Coffee)": {"description": "Spiced latte with turmeric and milk.
+    "Beetroot Latte": {"description": "Latte with vibrant, earthy beetroot and steamed milk.
+    "Butter Coffee": {"description": "Blended coffee with unsalted butter or ghee.
+    "Black Sesame Latte": {"description": "Nutty, creamy latte made with black sesame paste.
+
+    # 🍯 Honey & Spice-Based Coffees
+    "Cinnamon Latte": description": "Latte flavored with aromatic cinnamon.
+    "Honey Almondmilk Flat White": description": "Flat white with honey and almond milk.
+    "Maple Latte": description": "Latte sweetened with natural maple syrup.
+    "Cardamom Coffee": description": "Coffee infused with fragrant cardamom spice.
+    "Chai Coffee Blend": description": "Fusion of chai spices and espresso.

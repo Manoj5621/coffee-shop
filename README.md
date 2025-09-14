@@ -1,5 +1,10 @@
 Coffee_shop_Ai_Assistence_chatbot structure
 
+Screen Short
+
+
+
+
 coffee_shop/
 ├── backend/
 │   └── app/routes/
