@@ -14,6 +14,55 @@ function ProductListing() {
   const [orderStatus, setOrderStatus] = useState(null);
   const [activeTab, setActiveTab] = useState('menu');
   const [cartCount, setCartCount] = useState(0);
+  const [sugarOptions, setSugarOptions] = useState({});
+  const [descriptions, setDescriptions] = useState({});
+  const [selectedSugar, setSelectedSugar] = useState({});
+  const [customizations, setCustomizations] = useState({});
+
+  const handleSugarSelect = (productId, sugarLevel) => {
+  setSugarOptions(prev => ({
+    ...prev,
+    [productId]: sugarLevel
+  }));
+};
+
+const handleDescriptionChange = (productId, description) => {
+  setDescriptions(prev => ({
+    ...prev,
+    [productId]: description
+  }));
+};
+
+// const updatedCartData = {
+//   size,
+//   name: product.name,
+//   image: product.image,
+//   price: finalPrice,
+//   quantity: 1,
+//   sugar: sugarOptions[productId] || 'with sugar',
+//   specialInstructions: descriptions[productId] || ''
+// };
+
+// Add these to your useEffect where you initialize sizes
+useEffect(() => {
+  if (products.length > 0) {
+    const sizes = {};
+    const sugarOpts = {...sugarOptions};
+    const descs = {};
+    
+    products.forEach(product => {
+      sizes[product.product_id] = 'medium';
+      if (!sugarOpts[product.product_id]) {
+        sugarOpts[product.product_id] = 'with sugar';
+      }
+      descs[product.product_id] = '';
+    });
+    
+    setSelectedSizes(sizes);
+    setSugarOptions(sugarOpts);
+    setDescriptions(descs);
+  }
+}, [products]);
 
   useEffect(() => {
     loadProducts();
@@ -110,19 +159,40 @@ function ProductListing() {
     }));
   };
 
+  // Calculate price based on size selection
+  const calculatePrice = (product, size) => {
+    const basePrice = product.discount_price || product.price;
+    
+    switch(size) {
+      case 'small':
+        return (basePrice * 0.7).toFixed(2); // 30% discount for small
+      case 'medium':
+        return basePrice; // Regular price for medium
+      case 'large':
+        return (basePrice * 1.25).toFixed(2); // 25% premium for large
+      default:
+        return basePrice;
+    }
+  };
+
 const handleBuyNow = async (productId) => {
   try {
     const size = selectedSizes[productId];
     const product = products.find(p => p.product_id === productId);
     const user_id = localStorage.getItem("user_id");
     
+    // Calculate the final price based on size
+    const finalPrice = calculatePrice(product, size);
+    
     // Add to cart first
     await addToCart(productId, { 
       size,
       name: product.name,
       image: product.image,
-      price: product.discount_price || product.price,
-      quantity: 1
+      price: finalPrice,
+      quantity: 1,
+      sugar: sugarOptions[productId] || 'with sugar',
+      specialInstructions: descriptions[productId] || ''
     });
     
     // Then call checkout API
@@ -154,43 +224,50 @@ const handleBuyNow = async (productId) => {
   }
 };
 
-  const handleAddToCart = async (productId) => {
-    try {
-      const size = selectedSizes[productId];
-      const product = products.find(p => p.product_id === productId);
-      
-      await addToCart(productId, { 
-        size,
-        name: product.name,
-        image: product.image,
-        price: product.discount_price || product.price,
-        quantity: 1
-      });
-      
-      setOrderStatus({ 
-        productId, 
-        message: 'Added to your cart!', 
-        isAddToCart: true 
-      });
+const handleAddToCart = async (productId) => {
+  try {
+    const size = selectedSizes[productId] || 'medium';
+    const sugar = sugarOptions[productId] || 'with sugar';
+    const customization = descriptions[productId] || '';
+    const product = products.find(p => p.product_id === productId);
+    
+    // Calculate the final price based on size
+    const finalPrice = calculatePrice(product, size);
+    
+    await addToCart(productId, { 
+      size,
+      sugar,
+      customization,
+      name: product.name,
+      image: product.image,
+      price: product.discount_price || product.price,
+      quantity: 1
+    });
+    
+    setOrderStatus({ 
+      productId, 
+      message: 'Added to your cart!', 
+      isAddToCart: true 
+    });
 
-      const cartButton = document.getElementById(`cart-btn-${productId}`);
-      if (cartButton) {
-        cartButton.classList.add('animate-add');
-        setTimeout(() => cartButton.classList.remove('animate-add'), 500);
-      }
-
-      setTimeout(() => setOrderStatus(null), 3000);
-      loadCartCount();
-    } catch (error) {
-      console.error('Failed to add to cart:', error);
-      setOrderStatus({ 
-        productId, 
-        message: 'Failed to add to cart. Please try again.', 
-        error: true 
-      });
-      setTimeout(() => setOrderStatus(null), 3000);
+    const cartButton = document.getElementById(`cart-btn-${productId}`);
+    if (cartButton) {
+      cartButton.classList.add('animate-add');
+      setTimeout(() => cartButton.classList.remove('animate-add'), 500);
     }
-  };
+
+    setTimeout(() => setOrderStatus(null), 3000);
+    loadCartCount();
+  } catch (error) {
+    console.error('Failed to add to cart:', error);
+    setOrderStatus({ 
+      productId, 
+      message: 'Failed to add to cart. Please try again.', 
+      error: true 
+    });
+    setTimeout(() => setOrderStatus(null), 3000);
+  }
+};
 
   return (
     <div className="coffee-shop-container">
@@ -280,13 +357,14 @@ const handleBuyNow = async (productId) => {
                             <div className="product-details">
                               <h3 className="product-name">{product.name}</h3>
                               <div className="price-container">
-                                {product.discount_price ? (
-                                  <>
-                                    <span className="original-price">${product.price}</span>
-                                    <span className="discount-price">${product.discount_price}</span>
-                                  </>
-                                ) : (
-                                  <span className="regular-price">${product.price}</span>
+                                <span className="size-price">
+                                  ${calculatePrice(product, selectedSizes[product.product_id])}
+                                  <span className="size-label">
+                                    ({selectedSizes[product.product_id].toUpperCase()})
+                                  </span>
+                                </span>
+                                {product.discount_price && selectedSizes[product.product_id] === 'medium' && (
+                                  <span className="original-price">${product.price}</span>
                                 )}
                               </div>
                               <p className="product-description">{product.description}</p>
@@ -295,22 +373,65 @@ const handleBuyNow = async (productId) => {
                                 <button 
                                   className={`size-btn ${selectedSizes[product.product_id] === 'small' ? 'active' : ''}`}
                                   onClick={() => handleSizeSelect(product.product_id, 'small')}
+                                  title="Small - 30% off"
                                 >
                                   S
+                                  <span className="size-price-hint">${calculatePrice(product, 'small')}</span>
                                 </button>
                                 <button 
                                   className={`size-btn ${selectedSizes[product.product_id] === 'medium' ? 'active' : ''}`}
                                   onClick={() => handleSizeSelect(product.product_id, 'medium')}
+                                  title="Medium - Regular price"
                                 >
                                   M
+                                  <span className="size-price-hint">${calculatePrice(product, 'medium')}</span>
                                 </button>
                                 <button 
                                   className={`size-btn ${selectedSizes[product.product_id] === 'large' ? 'active' : ''}`}
                                   onClick={() => handleSizeSelect(product.product_id, 'large')}
+                                  title="Large - 25% more"
                                 >
                                   L
+                                  <span className="size-price-hint">${calculatePrice(product, 'large')}</span>
                                 </button>
                               </div>
+
+                              {/* Sugar Options */}
+                              <div className="sugar-selector">
+                                <button 
+                                  className={`sugar-btn ${sugarOptions[product.product_id] === 'with sugar' ? 'active' : ''}`}
+                                  onClick={() => handleSugarSelect(product.product_id, 'with sugar')}
+                                >
+                                  With Sugar
+                                </button>
+                                <button 
+                                  className={`sugar-btn ${sugarOptions[product.product_id] === 'without sugar' ? 'active' : ''}`}
+                                  onClick={() => handleSugarSelect(product.product_id, 'without sugar')}
+                                >
+                                  No Sugar
+                                </button>
+                                <button 
+                                  className={`sugar-btn ${sugarOptions[product.product_id] === 'extra sugar' ? 'active' : ''}`}
+                                  onClick={() => handleSugarSelect(product.product_id, 'extra sugar')}
+                                >
+                                  Extra Sugar
+                                </button>
+                              </div>
+
+                              {/* Special Instructions */}
+                            <div className="instructions-container">
+                              <textarea
+                                placeholder="Special instructions (optional)"
+                                value={descriptions[product.product_id] || ''}
+                                onChange={(e) => handleDescriptionChange(product.product_id, e.target.value)}
+                                className="instructions-input"
+                                rows="2"
+                                maxLength="100"
+                              />
+                              <div className="char-count">
+                                {descriptions[product.product_id] ? descriptions[product.product_id].length : 0}/100
+                              </div>
+                            </div>
 
                               <div className="action-buttons">
                                 <button 
@@ -363,13 +484,14 @@ const handleBuyNow = async (productId) => {
                         <div className="product-details">
                           <h3 className="product-name">{product.name}</h3>
                           <div className="price-container">
-                            {product.discount_price ? (
-                              <>
-                                <span className="original-price">${product.price}</span>
-                                <span className="discount-price">${product.discount_price}</span>
-                              </>
-                            ) : (
-                              <span className="regular-price">${product.price}</span>
+                            <span className="size-price">
+                              ${calculatePrice(product, selectedSizes[product.product_id])}
+                              <span className="size-label">
+                                ({selectedSizes[product.product_id].toUpperCase()})
+                              </span>
+                            </span>
+                            {product.discount_price && selectedSizes[product.product_id] === 'medium' && (
+                              <span className="original-price">${product.price}</span>
                             )}
                           </div>
                           <p className="product-description">{product.description}</p>
@@ -381,20 +503,26 @@ const handleBuyNow = async (productId) => {
                               <button 
                                 className={`size-btn ${selectedSizes[product.product_id] === 'small' ? 'active' : ''}`}
                                 onClick={() => handleSizeSelect(product.product_id, 'small')}
+                                title="Small - 30% off"
                               >
                                 S
+                                <span className="size-price-hint">${calculatePrice(product, 'small')}</span>
                               </button>
                               <button 
                                 className={`size-btn ${selectedSizes[product.product_id] === 'medium' ? 'active' : ''}`}
                                 onClick={() => handleSizeSelect(product.product_id, 'medium')}
+                                title="Medium - Regular price"
                               >
                                 M
+                                <span className="size-price-hint">${calculatePrice(product, 'medium')}</span>
                               </button>
                               <button 
                                 className={`size-btn ${selectedSizes[product.product_id] === 'large' ? 'active' : ''}`}
                                 onClick={() => handleSizeSelect(product.product_id, 'large')}
+                                title="Large - 25% more"
                               >
                                 L
+                                <span className="size-price-hint">${calculatePrice(product, 'large')}</span>
                               </button>
                             </div>
                           )}

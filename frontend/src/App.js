@@ -6,10 +6,10 @@ import ViewCartPage from "./pages/ViewCartPage";
 import OrderHistoryPage from "./pages/OrderHistoryPage";
 import AdminDashboard from "./pages/AdminDashboard";
 import ProductListing from './pages/ProductListing';
+import Payment from './pages/PaymentPage'
 
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import 'swiper/css';
-import './pages/Dashboard.css';
 
 function App() {
   return (
@@ -27,6 +27,7 @@ function App() {
         <Route path="/products" element={<Dashboard />} />
         <Route path="/admin" element={<AdminDashboard />} />
         <Route path="/products" element={<ProductListing />} />
+        <Route path="/payment" element={<Payment />} />
       </Routes>
     </Router>
   );

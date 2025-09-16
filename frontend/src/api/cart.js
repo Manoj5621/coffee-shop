@@ -77,67 +77,45 @@ export async function checkout(user_id) {
   const payload = { user_id, items };
   console.log("[DEBUG] Final payload for checkout API:", payload);
 
-  try {
-    const res = await fetch(`${BASE_URL}api/checkout`, {
-      method: "POST",
-      headers: { 
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${localStorage.getItem('token')}`
-      },
-      body: JSON.stringify(payload), // send both user_id and cart items
-    });
-
-    console.log("[DEBUG] Response status:", res.status);
-
-    if (!res.ok) {
-      const errorText = await res.text();
-      console.error("[DEBUG] Checkout API Error Response:", errorText);
-      throw new Error("Checkout failed");
-    }
-
-    const data = await res.json();
-    console.log("[DEBUG] Checkout API Success Response:", data);
-    return data;
-
-  } catch (err) {
-    console.error("[DEBUG] Checkout function error:", err);
-    throw err;
-  }
 }
 
 
 export function addToCart(productId, itemDetails) {
-  const user_id = localStorage.getItem("user_id"); // still keep per-user cart if needed
-
+  const user_id = localStorage.getItem("user_id");
+  
   // Get existing cart from localStorage
   let cart = JSON.parse(localStorage.getItem("cart")) || [];
-
+  
   // Check if the item already exists in cart
   const existingItemIndex = cart.findIndex(
-    (item) => item.user_id === user_id && item.product_id === productId
+    (item) => item.user_id === user_id && 
+              item.product_id === productId && 
+              item.size === itemDetails.size &&
+              item.sugar === itemDetails.sugar &&
+              item.customization === itemDetails.customization
   );
-
+  
   if (existingItemIndex >= 0) {
-    // If item exists, increase quantity
+    // If identical item exists, increase quantity
     cart[existingItemIndex].quantity += 1;
   } else {
-    // Add new item
+    // Add new item with customization details
     cart.push({
       user_id,
       product_id: productId,
       quantity: 1,
+      size: itemDetails.size || 'medium',
+      sugar: itemDetails.sugar || 'normal',
+      customization: itemDetails.customization || '',
       ...itemDetails
     });
   }
-
+  
   // Save updated cart to localStorage
   localStorage.setItem("cart", JSON.stringify(cart));
-
-  // Return the updated cart
+  
   return cart;
 }
-
-
 
 export async function getOrderHistory(user_id) {
   const res = await fetch(`${BASE_URL}/order-history/${user_id}`, {

@@ -574,14 +574,6 @@
   background-color: rgba(255, 248, 240, 0.8);
 }
 
-.contact-container {
-  display: grid;
-  grid-template-columns: 1fr 2fr;
-  gap: 30px;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
 .contact-card {
   background-color: white;
   padding: 30px;
@@ -899,4 +891,583 @@
   width: 350px;
   height:500px;
   transition: all 0.3s ease;
+}
+
+/* Interactive Map Styles */
+.interactive-map {
+  margin: 20px 0;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  background: linear-gradient(135deg, #8B5A2B 0%, #6F4E37 100%);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  height: 250px;
+}
+
+.interactive-map:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.map-content {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: linear-gradient(135deg, #a67b5b 0%, #8B5A2B 100%);
+}
+
+.map-marker {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 40px;
+  height: 40px;
+  background-color: #e74c3c;
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(-45deg);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  z-index: 10;
+  animation: pulse 2s infinite;
+}
+
+.map-marker i {
+  color: white;
+  transform: rotate(45deg);
+  font-size: 18px;
+}
+
+.map-overlay {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 10px 15px;
+  border-radius: 8px;
+  z-index: 5;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.map-overlay h4 {
+  margin: 0;
+  color: #6F4E37;
+  font-size: 14px;
+}
+
+.map-overlay p {
+  margin: 5px 0 0;
+  color: #8B5A2B;
+  font-size: 12px;
+}
+
+.map-zoom-controls {
+  position: absolute;
+  bottom: 15px;
+  right: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 5;
+}
+
+.map-control-btn {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  background: white;
+  border: none;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #6F4E37;
+  font-size: 12px;
+  transition: all 0.2s ease;
+}
+
+.map-control-btn:hover {
+  background: #6F4E37;
+  color: white;
+}
+
+.map-roads {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  opacity: 0.6;
+  transition: opacity 0.3s ease;
+}
+
+.map-roads:before {
+  content: '';
+  position: absolute;
+  width: 80%;
+  height: 8px;
+  background: #D4A76A;
+  top: 40%;
+  left: 10%;
+  border-radius: 4px;
+  box-shadow: 0 30px 0 #D4A76A, 0 60px 0 #D4A76A, 0 90px 0 #D4A76A;
+}
+
+.map-roads:after {
+  content: '';
+  position: absolute;
+  width: 8px;
+  height: 80%;
+  background: #D4A76A;
+  left: 40%;
+  top: 10%;
+  border-radius: 4px;
+  box-shadow: 30px 0 0 #D4A76A, 60px 0 0 #D4A76A, 90px 0 0 #D4A76A;
+}
+
+.map-buildings {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  opacity: 0.4;
+  transition: opacity 0.3s ease;
+}
+
+.map-buildings:before {
+  content: '';
+  position: absolute;
+  width: 40px;
+  height: 70px;
+  background: #7E685A;
+  bottom: 40px;
+  left: 50px;
+  border-radius: 4px 4px 0 0;
+  box-shadow: 50px 0 0 #7E685A, 100px -20px 0 10px #7E685A, 150px 0 0 5px #7E685A,
+              200px -10px 0 8px #7E685A, 250px 0 0 #7E685A;
+}
+
+.map-actions {
+  position: absolute;
+  bottom: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 5;
+}
+
+.map-directions-btn {
+  background: #6F4E37;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+}
+
+.map-directions-btn:hover {
+  background: #5a3c29;
+  transform: translateY(-2px);
+}
+
+/* Responsive adjustments for map */
+@media (max-width: 768px) {
+  .interactive-map {
+    height: 200px;
+  }
+  
+  .map-marker {
+    width: 30px;
+    height: 30px;
+  }
+  
+  .map-marker i {
+    font-size: 14px;
+  }
+  
+  .map-overlay {
+    padding: 8px 12px;
+  }
+  
+  .map-overlay h4 {
+    font-size: 12px;
+  }
+  
+  .map-overlay p {
+    font-size: 10px;
+  }
+}
+
+@media (max-width: 576px) {
+  .interactive-map {
+    height: 180px;
+  }
+  
+  .map-zoom-controls {
+    bottom: 10px;
+    right: 10px;
+  }
+  
+  .map-control-btn {
+    width: 30px;
+    height: 30px;
+    font-size: 10px;
+  }
+}
+
+.map-content {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: none; /* Remove gradient background */
+}
+
+/* Centered Contact Form Styles */
+.contact-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  width: 100%;
+}
+
+.contact-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.admin-contact-form {
+  background: white;
+  padding: 35px 30px;
+  border-radius: 12px;
+  box-shadow: 0 5px 20px rgba(111, 78, 55, 0.1);
+  border: 1px solid #e8d9c5;
+  transition: all 0.3s ease;
+}
+
+.admin-contact-form:hover {
+  box-shadow: 0 8px 25px rgba(111, 78, 55, 0.15);
+}
+
+.admin-form-title {
+  color: #6f4e37;
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 24px;
+  font-weight: 600;
+  position: relative;
+  padding-bottom: 15px;
+}
+
+.admin-form-title::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 50px;
+  height: 3px;
+  background: linear-gradient(to right, #6F4E37, #d4a762);
+  border-radius: 3px;
+}
+
+.admin-input-group {
+  margin-bottom: 20px;
+}
+
+.admin-input-wrapper {
+  position: relative;
+  transition: all 0.3s ease;
+  padding-right: 65px;
+}
+
+.admin-form-input, .admin-form-textarea {
+  width: 100%;
+  padding: 14px 15px 14px 45px;
+  border: 2px solid #e8d9c5;
+  border-radius: 8px;
+  font-size: 15px;
+  background: #f9f5f0;
+  transition: all 0.3s ease;
+  color: #5a3c29;
+  font-family: 'Poppins', sans-serif;
+}
+
+.admin-form-textarea {
+  min-height: 140px;
+  resize: vertical;
+}
+
+.admin-form-input:focus, .admin-form-textarea:focus {
+  outline: none;
+  border-color: #d4a762;
+  background: white;
+  box-shadow: 0 0 0 3px rgba(212, 167, 98, 0.2);
+}
+
+.admin-form-input::placeholder, .admin-form-textarea::placeholder {
+  color: #a67b5b;
+  transition: all 0.3s ease;
+}
+
+.admin-form-input:focus::placeholder, .admin-form-textarea:focus::placeholder {
+  opacity: 0.7;
+}
+
+.admin-input-icon {
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #a67b5b;
+  transition: all 0.3s ease;
+}
+
+.admin-input-wrapper.admin-focused .admin-input-icon {
+  color: #6F4E37;
+}
+
+.admin-form-textarea + .admin-input-icon {
+  top: 20px;
+  transform: none;
+}
+
+.admin-submit-btn {
+  position: relative;
+  width: 100%;
+  padding: 16px 20px;
+  background: linear-gradient(135deg, #6F4E37 0%, #8b5a2b 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.admin-submit-btn:hover {
+  background: linear-gradient(135deg, #8b5a2b 0%, #6F4E37 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(111, 78, 55, 0.3);
+}
+
+.admin-submit-btn:active {
+  transform: translateY(0);
+}
+
+.admin-btn-icon {
+  display: flex;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+
+.admin-btn-text {
+  transition: all 0.3s ease;
+}
+
+.admin-btn-loader {
+  position: absolute;
+  opacity: 0;
+  transform: scale(0.8);
+  transition: all 0.3s ease;
+}
+
+.admin-loader-dots {
+  display: flex;
+  gap: 5px;
+}
+
+.admin-dot {
+  width: 8px;
+  height: 8px;
+  background: white;
+  border-radius: 50%;
+  animation: adminDotPulse 1.5s infinite ease-in-out;
+}
+
+.admin-dot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.admin-dot:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes adminDotPulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(0.5);
+    opacity: 0.5;
+  }
+}
+
+/* Loading state */
+.admin-submit-btn.admin-loading .admin-btn-icon,
+.admin-submit-btn.admin-loading .admin-btn-text {
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.admin-submit-btn.admin-loading .admin-btn-loader {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Success state */
+.admin-submit-btn.admin-success {
+  background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%);
+}
+
+.admin-submit-btn.admin-success .admin-btn-text {
+  opacity: 1;
+  transform: none;
+}
+
+/* Form validation styles */
+.admin-form-input:invalid:not(:focus):not(:placeholder-shown),
+.admin-form-textarea:invalid:not(:focus):not(:placeholder-shown) {
+  border-color: #ff4757;
+  background: rgba(255, 71, 87, 0.05);
+}
+
+.admin-form-input:valid:not(:focus):not(:placeholder-shown),
+.admin-form-textarea:valid:not(:focus):not(:placeholder-shown) {
+  border-color: #2ed573;
+  background: rgba(46, 213, 115, 0.05);
+}
+
+/* Animation for form elements */
+.admin-contact-form .admin-input-group {
+  opacity: 0;
+  transform: translateY(15px);
+  animation: adminFadeInUp 0.5s ease forwards;
+}
+
+.admin-contact-form .admin-input-group:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.admin-contact-form .admin-input-group:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.admin-contact-form .admin-input-group:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+.admin-contact-form .admin-submit-btn {
+  opacity: 0;
+  transform: translateY(15px);
+  animation: adminFadeInUp 0.5s ease 0.4s forwards;
+}
+
+@keyframes adminFadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .contact-section {
+    padding: 30px 15px;
+  }
+  
+  .admin-contact-form {
+    padding: 25px 20px;
+  }
+  
+  .admin-form-title {
+    font-size: 22px;
+    margin-bottom: 25px;
+  }
+  
+  .admin-form-input, .admin-form-textarea {
+    padding: 12px 12px 12px 40px;
+  }
+  
+  .admin-input-icon {
+    left: 12px;
+  }
+}
+
+@media (max-width: 576px) {
+  .admin-contact-form {
+    padding: 20px 15px;
+  }
+  
+  .admin-form-title {
+    font-size: 20px;
+  }
+  
+  .admin-form-input, .admin-form-textarea {
+    padding: 10px 10px 10px 35px;
+    font-size: 14px;
+  }
+  
+  .admin-input-icon {
+    font-size: 14px;
+  }
+  
+  .admin-submit-btn {
+    padding: 14px 15px;
+    font-size: 15px;
+  }
+}
+
+.status-card {
+  padding: 20px;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.status-card h3 {
+  margin-bottom: 15px;
+}
+
+.status-card p {
+  margin: 10px 0;   /* Adds space between each <p> field */
+  display: flex;
+  align-items: center;
+  gap: 8px;         /* Space between icon and text */
+}
+
+.status-indicator.open {
+  color: green;
+}
+
+.status-indicator.closed {
+  color: red;
+}
+
+.interactive-map {
+  margin-top: 20px;
+  position: relative;
+  width: 100%;
+  height: 250px;
+  border-radius: 10px;
+  overflow: hidden;
 }
