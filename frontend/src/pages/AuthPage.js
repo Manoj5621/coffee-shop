@@ -34,6 +34,7 @@ function AuthPage({ initialMode = "login" }) {
         : await login({ email, password });
       localStorage.setItem('token', response.token);
       localStorage.setItem('user_id', response.user_id || "static-user-id");
+      localStorage.setItem('user_role', response.user_role || "user");
 
       if (isSignup) {
         setShowSuccessPopup(true);
@@ -48,7 +49,13 @@ function AuthPage({ initialMode = "login" }) {
         setShowLoginPopup(true);
         setTimeout(() => {
           setShowLoginPopup(false);
+          let user_role = localStorage.getItem("user_role");
+          if (user_role == "admin"){
+            navigate("/admin")
+          }
+          else{
           navigate("/");
+          }
         }, 3000);
       }
     } catch (err) {

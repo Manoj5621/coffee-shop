@@ -8,6 +8,7 @@ import 'swiper/css/effect-fade';
 import ProductListing from './ProductListing';
 import ChatbotPage from './ChatbotPage'; // Assuming you have a ChatbotPage component
 import './Dashboard.css';
+import { submitContactForm } from '../api/contact';
 
 // Image imports (you'll need to download and place these in your project)
 import coffeeBg from './assets/coffee-bg.jpg';
@@ -46,21 +47,33 @@ useEffect(() => {
 }, []);
   
 // Form submission handler
-const handleAdminFormSubmit = (e) => {
+const handleAdminFormSubmit = async (e) => {
   e.preventDefault();
   
   // Get form elements
   const form = e.target;
+  const nameInput = form.querySelector('input[name="name"]');
+  const emailInput = form.querySelector('input[name="email"]');
+  const messageInput = form.querySelector('textarea[name="message"]');
   const submitBtn = form.querySelector('.admin-submit-btn');
   const btnText = submitBtn.querySelector('.admin-btn-text');
-  const btnLoader = submitBtn.querySelector('.admin-btn-loader');
   
   // Show loading state
   submitBtn.classList.add('admin-loading');
   btnText.textContent = 'Sending...';
   
-  // Simulate form submission
-  setTimeout(() => {
+  try {
+    // Prepare form data
+    const formData = {
+      name: nameInput.value,
+      email: emailInput.value,
+      message: messageInput.value
+    };
+    
+    // Submit to backend
+    const result = await submitContactForm(formData);
+    
+    // Show success state
     submitBtn.classList.remove('admin-loading');
     btnText.textContent = 'Message Sent!';
     submitBtn.classList.add('admin-success');
@@ -71,7 +84,19 @@ const handleAdminFormSubmit = (e) => {
       submitBtn.classList.remove('admin-success');
       btnText.textContent = 'Send Message';
     }, 2000);
-  }, 2000);
+    
+  } catch (error) {
+    console.error('Failed to submit contact form:', error);
+    submitBtn.classList.remove('admin-loading');
+    btnText.textContent = 'Failed to Send';
+    submitBtn.classList.add('admin-error');
+    
+    // Reset after error
+    setTimeout(() => {
+      submitBtn.classList.remove('admin-error');
+      btnText.textContent = 'Send Message';
+    }, 2000);
+  }
 };
 
 // Add event listener to form
@@ -645,23 +670,41 @@ useEffect(() => {
     <div className="section-divider"></div>
   </div>
   <div className="contact-container">
-    <form className="admin-contact-form">
+    <form className="admin-contact-form" onSubmit={handleAdminFormSubmit}>
       <h3 className="admin-form-title">Send Us a Message</h3>
       <div className="admin-input-group">
         <div className="admin-input-wrapper">
-          <input type="text" className="admin-form-input" placeholder="Your Name" required />
+          <input 
+            type="text" 
+            name="name"
+            className="admin-form-input" 
+            placeholder="Your Name" 
+            required 
+          />
           <i className="admin-input-icon fas fa-user"></i>
         </div>
       </div>
       <div className="admin-input-group">
         <div className="admin-input-wrapper">
-          <input type="email" className="admin-form-input" placeholder="Your Email" required />
+          <input 
+            type="email" 
+            name="email"
+            className="admin-form-input" 
+            placeholder="Your Email" 
+            required 
+          />
           <i className="admin-input-icon fas fa-envelope"></i>
         </div>
       </div>
       <div className="admin-input-group">
         <div className="admin-input-wrapper">
-          <textarea className="admin-form-textarea" placeholder="Your Message" rows="5" required></textarea>
+          <textarea 
+            name="message"
+            className="admin-form-textarea" 
+            placeholder="Your Message" 
+            rows="5" 
+            required
+          ></textarea>
           <i className="admin-input-icon fas fa-comment"></i>
         </div>
       </div>
