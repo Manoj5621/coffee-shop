@@ -159,11 +159,7 @@
   color: #6f4e37;
 }
 
-.dashboard-sections {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 30px;
-}
+
 
 .recent-orders, .popular-products {
   background: white;
@@ -298,8 +294,6 @@
 }
 
 .section-header {
-  display: flex;
-  justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
 }
@@ -312,7 +306,7 @@
   padding-bottom: 5px;
 }
 
-.section-header h2::after {
+/* .section-header h2::after {
   content: '';
   position: absolute;
   bottom: 0;
@@ -320,7 +314,7 @@
   width: 50px;
   height: 3px;
   background-color: #d4a762;
-}
+} */
 
 .add-product-btn {
   background-color: #6f4e37;

@@ -6,8 +6,8 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/effect-fade';
 import ProductListing from './ProductListing';
-import './ProductListing.css';
 import ChatbotPage from './ChatbotPage'; // Assuming you have a ChatbotPage component
+import './Dashboard.css';
 
 // Image imports (you'll need to download and place these in your project)
 import coffeeBg from './assets/coffee-bg.jpg';
@@ -16,10 +16,9 @@ import coffeeShop from './assets/coffee-shop.jpg';
 import barista from './assets/barista.jpg';
 import coffeeCup from './assets/coffee-cup.jpg';
 import chatbotIcon from './assets/chatbot-icon.png';
-import jamesWilson from './assets/james-wilson.jpg';
-import mariaGarcia from './assets/maria-garcia.jpg';
-import thomasLee from './assets/thomas-lee.jpg';
-
+import jamesWilson from './assets/person_1.jpg';
+import mariaGarcia from './assets/person_2.jpg';
+import thomasLee from './assets/person_3.jpg';
 
 const CoffeeHouse = ({ name }) => {
   // Refs for each section
@@ -46,13 +45,174 @@ useEffect(() => {
   setIsLoggedIn(!!token && !!userId);
 }, []);
   
+// Form submission handler
+const handleAdminFormSubmit = (e) => {
+  e.preventDefault();
+  
+  // Get form elements
+  const form = e.target;
+  const submitBtn = form.querySelector('.admin-submit-btn');
+  const btnText = submitBtn.querySelector('.admin-btn-text');
+  const btnLoader = submitBtn.querySelector('.admin-btn-loader');
+  
+  // Show loading state
+  submitBtn.classList.add('admin-loading');
+  btnText.textContent = 'Sending...';
+  
+  // Simulate form submission
+  setTimeout(() => {
+    submitBtn.classList.remove('admin-loading');
+    btnText.textContent = 'Message Sent!';
+    submitBtn.classList.add('admin-success');
+    
+    // Reset form after success
+    setTimeout(() => {
+      form.reset();
+      submitBtn.classList.remove('admin-success');
+      btnText.textContent = 'Send Message';
+    }, 2000);
+  }, 2000);
+};
+
+// Add event listener to form
+useEffect(() => {
+  const form = document.querySelector('.admin-contact-form');
+  if (form) {
+    form.addEventListener('submit', handleAdminFormSubmit);
+    
+    // Add input animations
+    const inputs = form.querySelectorAll('.admin-form-input, .admin-form-textarea');
+    inputs.forEach(input => {
+      input.addEventListener('focus', () => {
+        input.parentElement.classList.add('admin-focused');
+      });
+      
+      input.addEventListener('blur', () => {
+        if (input.value === '') {
+          input.parentElement.classList.remove('admin-focused');
+        }
+      });
+    });
+    
+    return () => {
+      form.removeEventListener('submit', handleAdminFormSubmit);
+    };
+  }
+}, []);
+
+// Form submission handler
+const handleFormSubmit = (e) => {
+  e.preventDefault();
+  
+  // Get form elements
+  const form = e.target;
+  const submitBtn = form.querySelector('.form-submit-btn');
+  const btnText = submitBtn.querySelector('.btn-text');
+  const btnLoader = submitBtn.querySelector('.btn-loader');
+  
+  // Show loading state
+  submitBtn.classList.add('loading');
+  btnText.textContent = 'Sending...';
+  
+  // Simulate form submission
+  setTimeout(() => {
+    submitBtn.classList.remove('loading');
+    btnText.textContent = 'Message Sent!';
+    submitBtn.classList.add('success');
+    
+    // Reset form after success
+    setTimeout(() => {
+      form.reset();
+      submitBtn.classList.remove('success');
+      btnText.textContent = 'Send Message';
+    }, 2000);
+  }, 2000);
+};
+
+// Add event listener to form
+useEffect(() => {
+  const form = document.querySelector('.coffee-contact-form');
+  if (form) {
+    form.addEventListener('submit', handleFormSubmit);
+    
+    // Add input animations
+    const inputs = form.querySelectorAll('.form-input-control, .form-textarea-control');
+    inputs.forEach(input => {
+      input.addEventListener('focus', () => {
+        input.parentElement.classList.add('focused');
+      });
+      
+      input.addEventListener('blur', () => {
+        if (input.value === '') {
+          input.parentElement.classList.remove('focused');
+        }
+      });
+    });
+    
+    return () => {
+      form.removeEventListener('submit', handleFormSubmit);
+    };
+  }
+}, []);
+
+// Function to open Google Maps with directions
+const openGoogleMaps = () => {
+  const lat = 12.5944;
+  const lng = 75.8431;
+  const destination = encodeURIComponent(`${lat},${lng}`);
+  // Open Google Maps directions in a new tab
+  window.open(`https://www.google.com/maps/dir/?api=1&destination=${destination}`, '_blank');
+};
+
+// Map zoom state (simulated)
+const [zoomLevel, setZoomLevel] = useState(1);
+
+const zoomIn = () => {
+  if (zoomLevel < 3) {
+    setZoomLevel(zoomLevel + 0.5);
+    updateMapVisuals(zoomLevel + 0.5);
+  }
+};
+
+const zoomOut = () => {
+  if (zoomLevel > 0.5) {
+    setZoomLevel(zoomLevel - 0.5);
+    updateMapVisuals(zoomLevel - 0.5);
+  }
+};
+
+// Function to update map visuals based on zoom level
+const updateMapVisuals = (level) => {
+  const roads = document.querySelector('.map-roads');
+  const buildings = document.querySelector('.map-buildings');
+
+  if (!roads || !buildings) return; // safely exit if elements are missing
+
+  if (level >= 2) {
+    roads.style.opacity = '1';
+    buildings.style.opacity = '0.8';
+  } else if (level >= 1) {
+    roads.style.opacity = '0.6';
+    buildings.style.opacity = '0.4';
+  } else {
+    roads.style.opacity = '0.3';
+    buildings.style.opacity = '0.2';
+  }
+};
+
+
+// Initialize map visuals on component mount
+useEffect(() => {
+  updateMapVisuals(zoomLevel);
+}, []);
+
   // Shop status logic
   const [shopStatus, setShopStatus] = React.useState({
     isOpen: false,
     openingTime: '8:00 AM',
     closingTime: '8:00 PM',
     currentTime: new Date().toLocaleTimeString(),
-    location: '123 Coffee Street, Brew City'
+    location: 'Somwarpet, India'
   });
 
   // Sample reviews data
@@ -246,31 +406,35 @@ useEffect(() => {
           >
             Contact
           </button>
-<div className="nav-actions">
-  <Link to="/cart" className="cart-link">
-    <i className="fas fa-shopping-cart"></i> Cart
-  </Link>
-  {isLoggedIn ? (
-    <button 
-      className="auth-link"
-      onClick={() => {
-        localStorage.removeItem('token');
-        localStorage.removeItem('user_id');
-        setIsLoggedIn(false);
-        // Optional: redirect to home after logout
-        navigate('/');
-      }}
-    >
-      Logout
-    </button>
-  ) : (
-    <>
-      <Link to="/auth/signup" className="auth-link">SignUp</Link>
-      <Link to="/auth/login" className="auth-link">Login</Link>
-    </>
-  )}
-  <Link to="/admin" className="admin-link">Admin</Link>
-</div>
+
+          {isLoggedIn ? (
+            <Link to="/cart" className="cart-link">
+              <i className="fas fa-shopping-cart"></i> Cart
+            </Link>
+            ) : ( <></>
+            )}
+
+          <div className="nav-actions">
+            
+            {isLoggedIn ? (
+              <button 
+                className="auth-link"
+                onClick={() => {
+                  localStorage.removeItem('token');
+                  localStorage.removeItem('user_id');
+                  setIsLoggedIn(false);
+                  // Optional: redirect to home after logout
+                  navigate('/');
+                }}
+              >
+                Logout
+              </button>
+            ) : (
+              <>
+                <Link to="/auth/signup" className="auth-link">SignUp/In</Link>
+              </>
+            )}
+          </div>
         </div>
       </nav>
 
@@ -373,7 +537,7 @@ useEffect(() => {
   <div className="team-members">
     <div className="team-member">
       <div className="member-image" style={{ backgroundImage: `url(${jamesWilson})` }}></div>
-      <h4>James Wilson</h4>
+      <h4>Ramesh</h4>
       <p>Head Barista</p>
       <div className="member-social">
         <a href="#"><i className="fab fa-instagram"></i></a>
@@ -382,7 +546,7 @@ useEffect(() => {
     </div>
     <div className="team-member">
       <div className="member-image" style={{ backgroundImage: `url(${mariaGarcia})` }}></div>
-      <h4>Maria Garcia</h4>
+      <h4>Suresh</h4>
       <p>Pastry Chef</p>
       <div className="member-social">
         <a href="#"><i className="fab fa-instagram"></i></a>
@@ -391,7 +555,7 @@ useEffect(() => {
     </div>
     <div className="team-member">
       <div className="member-image" style={{ backgroundImage: `url(${thomasLee})` }}></div>
-      <h4>Thomas Lee</h4>
+      <h4>Rahul</h4>
       <p>Coffee Roaster</p>
       <div className="member-social">
         <a href="#"><i className="fab fa-instagram"></i></a>
@@ -403,89 +567,120 @@ useEffect(() => {
         </div>
       </section>
 
-      {/* Shop Section */}
-      <section ref={shopRef} id="shop" className="dashboard-section shop-section">
-        <div className="section-header">
-          <h2>Visit Us</h2>
-          <div className="section-divider"></div>
-        </div>
-        <div className="shop-info">
-          <div className="shop-status">
-            <div className="status-card">
-              <h3>Location & Hours</h3>
-              <p><i className="fas fa-map-marker-alt"></i> <strong>Address:</strong> {shopStatus.location}</p>
-              <p><i className="fas fa-clock"></i> <strong>Current Time:</strong> {shopStatus.currentTime}</p>
-              <p><i className="fas fa-door-open"></i> <strong>Hours:</strong> {shopStatus.openingTime} - {shopStatus.closingTime}</p>
-              <p className={`status-indicator ${shopStatus.isOpen ? 'open' : 'closed'}`}>
-                <i className={`fas ${shopStatus.isOpen ? 'fa-check-circle' : 'fa-times-circle'}`}></i>
-                <strong>Status:</strong> {shopStatus.isOpen ? 'Open Now' : 'Currently Closed'}
-              </p>
-              <button className="directions-btn">
-                <i className="fas fa-directions"></i> Get Directions
-              </button>
-            </div>
-          </div>
-          
-          {/* Reviews Section */}
-          <div className="reviews">
-            <h3>What Our Customers Say</h3>
-            <div className="reviews-list">
-              {reviews.map(review => (
-                <div key={review.id} className="review-card">
-                  <div className="review-header">
-                    <div className="review-avatar">
-                      {review.name.charAt(0)}
-                    </div>
-                    <div className="review-info">
-                      <h4>{review.name}</h4>
-                      {renderStars(review.rating)}
-                    </div>
-                  </div>
-                  <p className="review-comment">{review.comment}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
+<section ref={shopRef} id="shop" className="dashboard-section shop-section">
+  <div className="section-header">
+    <h2>Visit Us</h2>
+    <div className="section-divider"></div>
+  </div>
+  <div className="shop-info">
+    <div className="shop-status">
+      <div className="status-card">
+        <h3>Location & Hours</h3>
+        <p><i className="fas fa-map-marker-alt"></i> <strong>Address:</strong> {shopStatus.location}</p>
+        <p><i className="fas fa-clock"></i> <strong>Current Time:</strong> {shopStatus.currentTime}</p>
+        <p><i className="fas fa-door-open"></i> <strong>Hours:</strong> {shopStatus.openingTime} - {shopStatus.closingTime}</p>
+        <p className={`status-indicator ${shopStatus.isOpen ? 'open' : 'closed'}`}>
+          <i className={`fas ${shopStatus.isOpen ? 'fa-check-circle' : 'fa-times-circle'}`}></i>
+          <strong>Status:</strong> {shopStatus.isOpen ? 'Open Now' : 'Currently Closed'}
+        </p>
+        
+        {/* Interactive Map Container */}
+        <div className="interactive-map">
+          <iframe
+            title="Kakke Hole Map"
+            src="https://www.openstreetmap.org/export/embed.html?bbox=75.823%2C12.584%2C75.853%2C12.604&layer=mapnik&marker=12.5944,75.8431"
+            style={{ border: 0, width: "100%", height: "100%" }}
+            allowFullScreen
+          ></iframe>
 
-      {/* Contact Section */}
-      <section ref={contactRef} id="contact" className="dashboard-section contact-section">
-        <div className="section-header">
-          <h2>Get In Touch</h2>
-          <div className="section-divider"></div>
+          <div className="map-overlay">
+            <h4>Our Location</h4>
+            <p>Somwarpet, India</p>
+            {/* <div className="map-zoom-controls">
+              <button className="map-control-btn" onClick={zoomIn}>
+                <i className="fas fa-plus"></i>
+              </button>
+              <button className="map-control-btn" onClick={zoomOut}>
+                <i className="fas fa-minus"></i>
+              </button>
+            </div> */}
+          </div>
+
+          <div className="map-actions">
+            <button className="map-directions-btn" onClick={openGoogleMaps}>
+              <i className="fas fa-directions"></i> Get Directions
+            </button>
+          </div>
         </div>
-        <div className="contact-container">
-          <div className="contact-info">
-            <div className="contact-card">
-              <h3>Contact Information</h3>
-              <p><i className="fas fa-phone"></i> <strong>Phone:</strong> (123) 456-7890</p>
-              <p><i className="fas fa-envelope"></i> <strong>Email:</strong> contact@brewhaven.com</p>
-              <p><i className="fas fa-map-marker-alt"></i> <strong>Address:</strong> {shopStatus.location}</p>
-              <div className="social-links">
-                <a href="#"><i className="fab fa-facebook"></i></a>
-                <a href="#"><i className="fab fa-instagram"></i></a>
-                <a href="#"><i className="fab fa-twitter"></i></a>
+      </div>
+    </div>
+    
+    {/* Reviews Section */}
+    <div className="reviews">
+      <h3>What Our Customers Say</h3>
+      <div className="reviews-list">
+        {reviews.map(review => (
+          <div key={review.id} className="review-card">
+            <div className="review-header">
+              <div className="review-avatar">
+                {review.name.charAt(0)}
+              </div>
+              <div className="review-info">
+                <h4>{review.name}</h4>
+                {renderStars(review.rating)}
               </div>
             </div>
+            <p className="review-comment">{review.comment}</p>
           </div>
-          <form className="contact-form">
-            <h3>Send Us a Message</h3>
-            <div className="form-group">
-              <input type="text" placeholder="Your Name" required />
-            </div>
-            <div className="form-group">
-              <input type="email" placeholder="Your Email" required />
-            </div>
-            <div className="form-group">
-              <textarea placeholder="Your Message" rows="5" required></textarea>
-            </div>
-            <button type="submit" className="submit-btn">
-              <i className="fas fa-paper-plane"></i> Send Message
-            </button>
-          </form>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+      {/* Contact Section */}
+<section ref={contactRef} id="contact" className="dashboard-section contact-section">
+  <div className="section-header">
+    <h2>Get In Touch</h2>
+    <div className="section-divider"></div>
+  </div>
+  <div className="contact-container">
+    <form className="admin-contact-form">
+      <h3 className="admin-form-title">Send Us a Message</h3>
+      <div className="admin-input-group">
+        <div className="admin-input-wrapper">
+          <input type="text" className="admin-form-input" placeholder="Your Name" required />
+          <i className="admin-input-icon fas fa-user"></i>
         </div>
-      </section>
+      </div>
+      <div className="admin-input-group">
+        <div className="admin-input-wrapper">
+          <input type="email" className="admin-form-input" placeholder="Your Email" required />
+          <i className="admin-input-icon fas fa-envelope"></i>
+        </div>
+      </div>
+      <div className="admin-input-group">
+        <div className="admin-input-wrapper">
+          <textarea className="admin-form-textarea" placeholder="Your Message" rows="5" required></textarea>
+          <i className="admin-input-icon fas fa-comment"></i>
+        </div>
+      </div>
+      <button type="submit" className="admin-submit-btn">
+        <span className="admin-btn-icon">
+          <i className="fas fa-paper-plane"></i>
+        </span>
+        <span className="admin-btn-text">Send Message</span>
+        <span className="admin-btn-loader">
+          <div className="admin-loader-dots">
+            <div className="admin-dot"></div>
+            <div className="admin-dot"></div>
+            <div className="admin-dot"></div>
+          </div>
+        </span>
+      </button>
+    </form>
+  </div>
+</section>
 
       {/* Footer */}
       <footer className="coffee-footer">

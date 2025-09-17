@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { viewCart, checkout } from "../api/cart";
 import { motion, AnimatePresence } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 import './ViewCartPage.css';
 
 function ViewCartPage() {
@@ -9,6 +10,7 @@ function ViewCartPage() {
   const [showCancelButton, setShowCancelButton] = useState(false);
   const [isCheckingOut, setIsCheckingOut] = useState(false);
   const user_id = localStorage.getItem("user_id");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const loadCart = async () => {
@@ -35,10 +37,8 @@ const handleCheckout = async () => {
   try {
     setIsCheckingOut(true);
     const res = await checkout(user_id); // calls POST /checkout
-    alert("Order placed successfully!");
-    setCartItems([]);
-    setOrderConfirmed(true);
-
+    navigate("/payment");
+    
     // Optional: redirect to /admin for testing
     // window.location.href = "/admin";
   } catch (error) {

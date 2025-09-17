@@ -101,6 +101,9 @@ async def view_cart(user_id: str):
 class CheckoutItem(BaseModel):
     product_id: str
     quantity: int
+    size: Optional[str] = "medium"
+    sugar: Optional[str] = "normal"
+    customization: Optional[str] = ""
 
 class CheckoutRequest(BaseModel):
     user_id: str
@@ -210,6 +213,9 @@ async def view_cart(user_id: str):
 class CheckoutItem(BaseModel):
     product_id: str
     quantity: int
+    size: Optional[str] = "medium"
+    sugar: Optional[str] = "normal"
+    customization: Optional[str] = ""
 
 class CheckoutRequest(BaseModel):
     user_id: str
@@ -252,8 +258,12 @@ async def checkout(data: CheckoutRequest):
             "name": product["name"],
             "price": product["discount_price"] if "discount_price" in product else product["price"],
             "quantity": item.quantity,
+            "size": item.size,
+            "sugar": item.sugar,
+            "customization": item.customization,
             "subtotal": subtotal
         })
+        
         total_amount += subtotal
         logging.debug("Running total_amount: %s", total_amount)
 

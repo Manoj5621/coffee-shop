@@ -266,7 +266,7 @@ function AuthPage({ initialMode = "login" }) {
                     type="text"
                     placeholder="e.g. John Doe"
                     value={name}
-                    onChange={(e) => setName(e.target.value)}
+                    onChange={(e) => setName(e.target.value.replace(/[^a-zA-Z\s]/g, ''))} 
                     className="coffee-input"
                     required
                   />

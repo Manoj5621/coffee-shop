@@ -213,44 +213,61 @@ const loadOrders = async () => {
     }
   };
 
-  const renderOrderRow = (order) => {
-    return (
-      <tr key={order._id}>
-        <td>#{order._id ? order._id.slice(-6) : "N/A"}</td>
-        <td>{order.user?.name || "Guest"}</td>
-        <td>{order.createdAt ? new Date(order.createdAt).toLocaleString() : "N/A"}</td>
-        <td>
-          {Array.isArray(order.items)
-            ? order.items.reduce((sum, item) => sum + (item.quantity || 0), 0)
-            : 0}
-        </td>
-        <td>{formatCurrency(order.total || 0)}</td>
-        <td>
-          <span className={`status-badge ${getStatusColor(order.status)}`}>
-            {order.status || "Unknown"}
-          </span>
-        </td>
-        <td>
-          {order.status?.toLowerCase().trim() === "pending" && (
-            <>
-              <button
-                className="action-btn complete"
-                onClick={() => handleComplete(order._id)}
-              >
-                Complete
-              </button>
-              <button
-                className="action-btn cancel"
-                onClick={() => handleCancel(order._id)}
-              >
-                Cancel
-              </button>
-            </>
-          )}
-        </td>
-      </tr>
-    );
-  };
+const renderOrderRow = (order) => {
+  return (
+    <tr key={order._id}>
+      <td>#{order._id ? order._id.slice(-6) : "N/A"}</td>
+      <td>{order.user?.name || "Guest"}</td>
+      <td>{order.createdAt ? new Date(order.createdAt).toLocaleString() : "N/A"}</td>
+      <td>
+        {Array.isArray(order.items)
+          ? order.items.reduce((sum, item) => sum + (item.quantity || 0), 0)
+          : 0}
+      </td>
+      <td>{formatCurrency(order.total || 0)}</td>
+      <td>
+        <span className={`status-badge ${getStatusColor(order.status)}`}>
+          {order.status || "Unknown"}
+        </span>
+      </td>
+      {/* New columns for customization data */}
+      <td>
+        {Array.isArray(order.items) && order.items.length > 0 && (
+          <div className="order-details">
+            {order.items.map((item, index) => (
+              <div key={index} className="item-detail">
+                <strong>{item.name}</strong>
+                <div>Size: {item.size || 'Medium'}</div>
+                <div>Sugar: {item.sugar || 'Normal'}</div>
+                {item.customization && (
+                  <div>Notes: {item.customization}</div>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
+      </td>
+      <td>
+        {order.status?.toLowerCase().trim() === "pending" && (
+          <>
+            <button
+              className="action-btn complete"
+              onClick={() => handleComplete(order._id)}
+            >
+              Complete
+            </button>
+            <button
+              className="action-btn cancel"
+              onClick={() => handleCancel(order._id)}
+            >
+              Cancel
+            </button>
+          </>
+        )}
+      </td>
+    </tr>
+  );
+};
 
   return (
     <div className="admin-dashboard">
@@ -279,12 +296,7 @@ const loadOrders = async () => {
           >
             <FiCoffee /> Products
           </button>
-          <button 
-            className={`nav-btn ${activeTab === "customers" ? "active" : ""}`}
-            onClick={() => setActiveTab("customers")}
-          >
-            <FiUsers /> Customers
-          </button>
+
         </nav>
       </div>
 
@@ -434,6 +446,7 @@ const loadOrders = async () => {
                       <th>Items</th>
                       <th>Amount</th>
                       <th>Status</th>
+                      <th>Customizations</th>
                       <th>Actions</th>
                     </tr>
                   </thead>
@@ -631,7 +644,7 @@ const loadOrders = async () => {
           </div>
         )}
 
-        {activeTab === "customers" && (
+        {/* {activeTab === "customers" && (
           <div className="customers-management">
             <h2>Customers Management</h2>
             <div className="coming-soon">
@@ -640,7 +653,7 @@ const loadOrders = async () => {
               <p>Customer management features are under development</p>
             </div>
           </div>
-        )}
+        )} */}
       </div>
     </div>
   );
