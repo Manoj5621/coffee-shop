@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { getAllProducts, getProductTypes } from '../api/product';
 import './ProductListing.css';
 import { addToCart, viewCart, checkout } from '../api/cart';
+import { useNavigate } from 'react-router-dom';
 
 function ProductListing() {
   const [products, setProducts] = useState([]);
@@ -18,6 +19,7 @@ function ProductListing() {
   const [descriptions, setDescriptions] = useState({});
   const [selectedSugar, setSelectedSugar] = useState({});
   const [customizations, setCustomizations] = useState({});
+  const navigate = useNavigate();
 
   const handleSugarSelect = (productId, sugarLevel) => {
   setSugarOptions(prev => ({
@@ -195,24 +197,8 @@ const handleBuyNow = async (productId) => {
       specialInstructions: descriptions[productId] || ''
     });
     
-    // Then call checkout API
-    const checkoutResult = await checkout(user_id);
+    navigate('/payment');
     
-    setOrderStatus({ 
-      productId, 
-      message: 'Order placed successfully! Your coffee is being prepared.', 
-      isBuyNow: true 
-    });
-
-    const buyButton = document.getElementById(`buy-btn-${productId}`);
-    if (buyButton) {
-      buyButton.classList.add('animate-buy');
-      setTimeout(() => buyButton.classList.remove('animate-buy'), 500);
-    }
-
-    setTimeout(() => setOrderStatus(null), 3000);
-    loadCartCount();
-    localStorage.setItem("cart", JSON.stringify(null));
   } catch (error) {
     console.error('Failed to place order:', error);
     setOrderStatus({ 

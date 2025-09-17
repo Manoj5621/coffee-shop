@@ -15,6 +15,8 @@ import {
 import { motion } from "framer-motion";
 import { FiCoffee, FiPackage, FiUsers, FiDollarSign, FiPlus } from "react-icons/fi";
 import './AdminDashboard.css';
+import { getContacts, updateContactStatus, deleteContact } from '../api/contact';
+import { FiMessageSquare, FiMail, FiTrash2, FiEye, FiCornerUpRight } from 'react-icons/fi';
 
 function AdminDashboard() {
   const [orders, setOrders] = useState([]);
@@ -30,6 +32,7 @@ function AdminDashboard() {
   });
   const [popularProducts, setPopularProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [contacts, setContacts] = useState([]);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -40,6 +43,19 @@ function AdminDashboard() {
     description: "",
     newType: ""
   });
+
+  const loadContacts = async () => {
+  try {
+    setLoading(true);
+    const data = await getContacts();
+    setContacts(Array.isArray(data) ? data : []);
+    setLoading(false);
+  } catch (error) {
+    console.error("Failed to load contacts:", error);
+    setContacts([]);
+    setLoading(false);
+  }
+};
 
   useEffect(() => {
     loadDashboardData();
@@ -54,8 +70,40 @@ function AdminDashboard() {
     } else if (activeTab === "dashboard") {
       loadDashboardData();
     }
+    else if (activeTab === "contacts") {
+      loadContacts();
+    }
   }, [activeTab]);
   
+  const handleMarkAsRead = async (contactId) => {
+  try {
+    await updateContactStatus(contactId, "read");
+    loadContacts();
+  } catch (error) {
+    console.error("Failed to mark as read:", error);
+  }
+};
+
+const handleMarkAsReplied = async (contactId) => {
+  try {
+    await updateContactStatus(contactId, "replied");
+    loadContacts();
+  } catch (error) {
+    console.error("Failed to mark as replied:", error);
+  }
+};
+
+const handleDeleteContact = async (contactId) => {
+  if (window.confirm("Are you sure you want to delete this contact message?")) {
+    try {
+      await deleteContact(contactId);
+      loadContacts();
+    } catch (error) {
+      console.error("Failed to delete contact:", error);
+    }
+  }
+};
+
   const loadDashboardData = async () => {
     try {
       setLoading(true);
@@ -296,7 +344,12 @@ const renderOrderRow = (order) => {
           >
             <FiCoffee /> Products
           </button>
-
+          <button 
+            className={`nav-btn ${activeTab === "contacts" ? "active" : ""}`}
+            onClick={() => setActiveTab("contacts")}
+          >
+            <FiMail /> Contacts
+          </button>
         </nav>
       </div>
 
@@ -639,6 +692,98 @@ const renderOrderRow = (order) => {
                     </div>
                   </div>
                 ))}
+              </div>
+            )}
+          </div>
+        )}
+
+        {activeTab === "contacts" && (
+          <div className="contacts-management">
+            <div className="section-header">
+              <h2>Contact Messages</h2>
+            </div>
+
+            {loading ? (
+              <div className="loading-indicator">
+                <div className="coffee-brewing"></div>
+                <p>Loading messages...</p>
+              </div>
+            ) : contacts.length === 0 ? (
+              <div className="empty-state">
+                <FiMail className="empty-icon" />
+                <p>No contact messages found</p>
+              </div>
+            ) : (
+              <div className="contacts-table-container">
+                <table className="contacts-table">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Email</th>
+                      <th>Message</th>
+                      <th>Date</th>
+                      <th>Status</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {contacts.map((contact) => (
+                      <tr key={contact.contact_id} className={`contact-row ${contact.status}`}>
+                        <td>{contact.name}</td>
+                        <td>
+                          <a href={`mailto:${contact.email}`} className="email-link">
+                            {contact.email}
+                          </a>
+                        </td>
+                        <td className="message-cell">
+                          <div className="message-preview">
+                            {contact.message.length > 100 
+                              ? `${contact.message.substring(0, 100)}...` 
+                              : contact.message
+                            }
+                          </div>
+                        </td>
+                        <td>
+                          {new Date(contact.submitted_at).toLocaleDateString()}
+                        </td>
+                        <td>
+                          <span className={`status-badge status-${contact.status}`}>
+                            {contact.status}
+                          </span>
+                        </td>
+                        <td>
+                          <div className="contact-actions">
+                            {contact.status !== "read" && (
+                              <button
+                                className="action-btn read"
+                                onClick={() => handleMarkAsRead(contact.contact_id)}
+                                title="Mark as read"
+                              >
+                                <FiEye />
+                              </button>
+                            )}
+                            {contact.status !== "replied" && (
+                              <button
+                                className="action-btn replied"
+                                onClick={() => handleMarkAsReplied(contact.contact_id)}
+                                title="Mark as replied"
+                              >
+                                <FiCornerUpRight />
+                              </button>
+                            )}
+                            <button
+                              className="action-btn delete"
+                              onClick={() => handleDeleteContact(contact.contact_id)}
+                              title="Delete"
+                            >
+                              <FiTrash2 />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
               </div>
             )}
           </div>

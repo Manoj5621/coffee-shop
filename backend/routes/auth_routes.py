@@ -46,9 +46,14 @@ async def login(data: LoginRequest):
     if not user or not check_password_hash(user["password"], password):
         raise HTTPException(status_code=401, detail="Invalid credentials")
 
+    if email == "admin123@gmail.com" and password == "Admin1234":
+        user_role = "admin"
+    else:
+        user_role = "user"
     return {
         "message": "Login successful",
         "user_id": user["user_id"],
         "name": user["name"],
-        "email": user["email"]
+        "email": user["email"],
+        "user_role": user_role
     }

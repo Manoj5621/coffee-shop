@@ -7,9 +7,20 @@ import OrderHistoryPage from "./pages/OrderHistoryPage";
 import AdminDashboard from "./pages/AdminDashboard";
 import ProductListing from './pages/ProductListing';
 import Payment from './pages/PaymentPage'
-
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import 'swiper/css';
+import { Navigate } from "react-router-dom";
+
+// Protected Route Component
+const ProtectedRoute = ({ children, requiredRole }) => {
+  const userRole = localStorage.getItem("user_role");
+  
+  if (userRole !== requiredRole) {
+    return <Navigate to="/auth/login" replace />;
+  }
+  
+  return children;
+};
 
 function App() {
   return (
@@ -25,7 +36,14 @@ function App() {
         <Route path="/cart" element={<ViewCartPage />} />
         <Route path="/orders" element={<OrderHistoryPage />} />
         <Route path="/products" element={<Dashboard />} />
-        <Route path="/admin" element={<AdminDashboard />} />
+        <Route 
+          path="/admin" 
+          element={
+            <ProtectedRoute requiredRole="admin">
+              <AdminDashboard />
+            </ProtectedRoute>
+          } 
+        />
         <Route path="/products" element={<ProductListing />} />
         <Route path="/payment" element={<Payment />} />
       </Routes>

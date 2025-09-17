@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from routes import auth_routes, admin_routes, chatbot_routes, product_routes, cart_routes
+from routes import contact_routes, auth_routes, admin_routes, chatbot_routes, product_routes, cart_routes
 from db import db
 
 app = FastAPI()
@@ -20,7 +20,7 @@ app.include_router(admin_routes.router, prefix="/api")
 app.include_router(chatbot_routes.router, prefix="/api")
 app.include_router(product_routes.router, prefix="/api")
 app.include_router(cart_routes.router, prefix="/api")
-
+app.include_router(contact_routes.router, prefix="/api")
 
 @app.get("/")
 async def root():
