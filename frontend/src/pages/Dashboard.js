@@ -38,6 +38,34 @@ const CoffeeHouse = ({ name }) => {
   const [isChatbotAnimating, setIsChatbotAnimating] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showChatbot, setShowChatbot] = useState(false);
+const [animatedPosts, setAnimatedPosts] = useState(false);
+const [expandedPosts, setExpandedPosts] = useState({});
+
+const togglePostExpansion = (postId) => {
+  setExpandedPosts(prev => ({
+    ...prev,
+    [postId]: !prev[postId]
+  }));
+};
+
+useEffect(() => {
+  const handleScroll = () => {
+    const blogSection = document.getElementById('blog');
+    if (blogSection && !animatedPosts) {
+      const rect = blogSection.getBoundingClientRect();
+      if (rect.top < window.innerHeight - 100) {
+        setAnimatedPosts(true);
+      }
+    }
+  };
+
+  window.addEventListener('scroll', handleScroll);
+  return () => window.removeEventListener('scroll', handleScroll);
+}, [animatedPosts]);
+
+const handleReadMore = (postId) => {
+  togglePostExpansion(postId);
+};
 
 useEffect(() => {
   // Check if token and user_id exist in localStorage
@@ -519,31 +547,92 @@ useEffect(() => {
         </div>
       </section>
 
-      {/* Blog Section */}
-      <section ref={blogRef} id="blog" className="dashboard-section blog-section">
-        <div className="section-header">
-          <h2>Latest Posts</h2>
-          <div className="section-divider"></div>
+
+{/* Blog Section */}
+<section ref={blogRef} id="blog" className="dashboard-section blog-section">
+  <div className="section-header">
+    <h2>Latest Posts</h2>
+    <div className="section-divider"></div>
+  </div>
+  <div className="blog-posts">
+    <article className={`blog-post ${animatedPosts ? 'animate-in' : ''}`}>
+      <div className="post-image" style={{ backgroundImage: `url(${barista})` }}></div>
+      <div className="post-content">
+        <div className="post-meta">
+          <span className="post-date">
+            <i className="far fa-calendar"></i> December 15, 2024
+          </span>
+          <span className="post-category">
+            <i className="far fa-folder"></i> Coffee Culture
+          </span>
         </div>
-        <div className="blog-posts">
-          <article className="blog-post">
-            <div className="post-image" style={{ backgroundImage: `url(${barista})` }}></div>
-            <div className="post-content">
-              <h3>The Art of Coffee Making</h3>
-              <p>Learn about our traditional brewing techniques passed down through generations of baristas.</p>
-              <button className="read-more">Read More</button>
-            </div>
-          </article>
-          <article className="blog-post">
-            <div className="post-image" style={{ backgroundImage: `url(${coffeeCup})` }}></div>
-            <div className="post-content">
-              <h3>New Seasonal Drinks</h3>
-              <p>Discover our winter specials featuring cinnamon, nutmeg, and other warm spices.</p>
-              <button className="read-more">Read More</button>
-            </div>
-          </article>
+        <h3>The Art of Coffee Making</h3>
+        <p>Learn about our traditional brewing techniques passed down through generations of baristas. Discover the secrets behind the perfect espresso and latte art.</p>
+        
+        {/* Expanded content */}
+        {expandedPosts['coffee-making'] && (
+          <div className="expanded-content">
+            <p>At Brew Haven, we believe that coffee making is both a science and an art. Our baristas undergo months of training to master the perfect extraction time, water temperature, and milk texturing.</p>
+            <p>We source our beans from sustainable farms in Ethiopia, Colombia, and Sumatra, ensuring both quality and ethical practices. Each batch is roasted in-house to bring out the unique flavor profiles.</p>
+            <h4>Brewing Techniques We Use:</h4>
+            <ul>
+              <li>Pour-over for delicate, nuanced flavors</li>
+              <li>Espresso for rich, concentrated coffee</li>
+              <li>Cold brew for smooth, low-acidity options</li>
+              <li>Aeropress for clean, full-bodied cups</li>
+            </ul>
+          </div>
+        )}
+        
+        <button 
+          className="read-more" 
+          onClick={() => handleReadMore('coffee-making')}
+        >
+          {expandedPosts['coffee-making'] ? 'Show Less' : 'Read More'} 
+          <i className={`fas fa-arrow-${expandedPosts['coffee-making'] ? 'up' : 'right'}`}></i>
+        </button>
+      </div>
+    </article>
+    
+    <article className={`blog-post ${animatedPosts ? 'animate-in' : ''}`}>
+      <div className="post-image" style={{ backgroundImage: `url(${coffeeCup})` }}></div>
+      <div className="post-content">
+        <div className="post-meta">
+          <span className="post-date">
+            <i className="far fa-calendar"></i> December 10, 2024
+          </span>
+          <span className="post-category">
+            <i className="far fa-folder"></i> Seasonal Specials
+          </span>
         </div>
-      </section>
+        <h3>New Seasonal Drinks</h3>
+        <p>Discover our winter specials featuring cinnamon, nutmeg, and other warm spices. Limited time offerings that will warm your soul during the cold months.</p>
+        
+        {/* Expanded content */}
+        {expandedPosts['seasonal-drinks'] && (
+          <div className="expanded-content">
+            <p>Our winter menu features three exclusive drinks crafted to celebrate the season:</p>
+            <h4>Winter Spice Latte</h4>
+            <p>A blend of our signature espresso with steamed milk, infused with cinnamon, nutmeg, and a hint of orange zest. Topped with whipped cream and a dusting of spice.</p>
+            <h4>Peppermint Mocha</h4>
+            <p>Rich chocolate and peppermint combine with our dark roast espresso for a festive treat that's both refreshing and comforting.</p>
+            <h4>Gingerbread Brew</h4>
+            <p>Inspired by traditional gingerbread cookies, this drink features molasses, ginger, and cinnamon notes paired with our smooth blend.</p>
+            <p>All seasonal drinks are available until January 31st. Don't miss out on these limited-time offerings!</p>
+          </div>
+        )}
+        
+        <button 
+          className="read-more" 
+          onClick={() => handleReadMore('seasonal-drinks')}
+        >
+          {expandedPosts['seasonal-drinks'] ? 'Show Less' : 'Read More'} 
+          <i className={`fas fa-arrow-${expandedPosts['seasonal-drinks'] ? 'up' : 'right'}`}></i>
+        </button>
+      </div>
+    </article>
+  </div>
+</section>
 
       {/* About Section */}
       <section ref={aboutRef} id="about" className="dashboard-section about-section">
