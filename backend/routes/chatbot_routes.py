@@ -388,15 +388,38 @@ async def chatbot(request: ChatbotRequest):
                     
                     # Extract coffee name from the suggestion for search query
                     extracted_coffee = extract_coffee_from_suggestion(suggestion)
+                    # --- dedupe: avoid recommending the same coffee twice in a row ---
                     if extracted_coffee:
-                        search_query = extracted_coffee
-                        # Ensure the coffee name is highlighted in the response
-                        suggestion = highlight_coffee_name(suggestion, extracted_coffee)
-        
-        # Only set search query if it's coffee-related and not a greeting
-        if not is_coffee_related(user_input) or is_greeting(user_input):
+                        # Check last bot recommendation in this conversation to avoid repeats
+                        last_bot_coffee = None
+                        for msg in reversed(conversation_history):
+                            if msg.get("sender") == "bot" and msg.get("message"):
+                                last_bot_coffee = extract_coffee_from_suggestion(msg["message"])
+                                if last_bot_coffee:
+                                    break
+
+                        # If the new extracted coffee matches the last recommended coffee, pick an alternative
+                        if last_bot_coffee and extracted_coffee and last_bot_coffee.lower() == extracted_coffee.lower():
+                            logger.debug(f"Detected repeated recommendation '{extracted_coffee}'. Looking for alternative.")
+                            alternative = get_similar_available_product(extracted_coffee)
+                            # Update suggestion text and search_query to use the alternative
+                            suggestion = suggestion.replace(f"**{extracted_coffee}**", f"**{alternative}**")
+                            extracted_coffee = alternative
+                            search_query = alternative
+                            logger.debug(f"Replaced repeated coffee with alternative: {alternative}")
+                        else:
+                            # keep original extraction
+                            search_query = extracted_coffee
+                            suggestion = highlight_coffee_name(suggestion, extracted_coffee)
+
+
+        if is_greeting(user_input):
             search_query = None
-            logger.debug(f"Not coffee-related or greeting, search_query set to: {search_query}")
+            logger.debug(f"Greeting detected, search_query set to: {search_query}")
+        else:
+            # Keep whatever search_query was produced above (don't overwrite to None)
+            logger.debug(f"Keeping search_query: {search_query}")
+
 
         # Prepare response
         bot_response = {
